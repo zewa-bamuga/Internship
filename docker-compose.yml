@@ -1,0 +1,18 @@
+version: '3.7'
+
+volumes:
+  postgres_data: {}
+
+services:
+  postgres:
+    image: postgres:latest
+    volumes:
+      - postgres_data:/var/lib/postgresql/data/pgdata
+    environment:
+      - PGDATA=/var/lib/postgresql/data/pgdata
+    env_file:
+      - .env.example
+      - .env
+    restart: "unless-stopped"
+    ports:
+      - "5435:5432"
