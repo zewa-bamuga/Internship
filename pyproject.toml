@@ -11,7 +11,7 @@ fastapi = {extras = ["all"], version = "^0.110.0"}
 sqlalchemy = "^2.0.28"
 alembic = "^1.13.1"
 psycopg2 = "^2.9.9"
-a8t-tools = {version = "^0.2.0", extras = ["all"]}
+a8t-tools = {version = "^0.2.0", extras = ["all"], source = "gitlab"}
 
 
 [[tool.poetry.source]]

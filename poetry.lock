@@ -2187,4 +2187,4 @@ reference = "gitlab"
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.12"
-content-hash = "f261ab15487570b54bd591b19cf06a65f9b8a50b7feaf558e03123215a786121"
+content-hash = "daf0205d0729cabb70305d6efbbe54859fc8b46a809de86efac89827dad000f6"
