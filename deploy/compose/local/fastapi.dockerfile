@@ -7,7 +7,7 @@ RUN apt-get update && \
 	poetry config virtualenvs.create false && \
 	poetry config installer.max-workers 10
 COPY pyproject.toml poetry.lock  ./
-RUN poetry install --no-root --no-interaction --no-ansi
+RUN poetry install --only main --no-root --no-interaction --no-ansi
 
 COPY ./deploy /
 
