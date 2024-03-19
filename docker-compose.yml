@@ -15,4 +15,4 @@ services:
       - .env
     restart: "unless-stopped"
     ports:
-      - "5435:5432"
+      - "5432:5432"
