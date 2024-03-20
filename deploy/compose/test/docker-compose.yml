@@ -28,7 +28,6 @@ services:
     restart: "no"
     command: /start-db-init.sh
 
-
   postgres_test:
     image: postgres:latest
     volumes:
@@ -38,3 +37,5 @@ services:
     env_file:
       - .env.test
     restart: "unless-stopped"
+    ports:
+      - "5432:5432"

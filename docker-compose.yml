@@ -10,9 +10,6 @@ services:
       - postgres_data:/var/lib/postgresql/data/pgdata
     environment:
       - PGDATA=/var/lib/postgresql/data/pgdata
-    env_file:
-      - .env.example
-      - .env
-    restart: "unless-stopped"
+    restart: unless-stopped
     ports:
       - "5432:5432"
