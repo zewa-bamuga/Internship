@@ -1,15 +1,15 @@
-version: '3.7'
-
-volumes:
-  postgres_data: {}
-
-services:
-  postgres:
-    image: postgres:latest
-    volumes:
-      - postgres_data:/var/lib/postgresql/data/pgdata
-    environment:
-      - PGDATA=/var/lib/postgresql/data/pgdata
-    restart: unless-stopped
-    ports:
-      - "5432:5432"
+#version: '3.7'
+#
+#volumes:
+#  postgres_data: {}
+#
+#services:
+#  postgres:
+#    image: postgres:latest
+#    volumes:
+#      - postgres_data:/var/lib/postgresql/data/pgdata
+#    environment:
+#      - PGDATA=/var/lib/postgresql/data/pgdata
+#    restart: unless-stopped
+#    ports:
+#      - "5432:5432"
