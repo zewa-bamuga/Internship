@@ -8,12 +8,14 @@ readme = "README.md"
 [tool.poetry.dependencies]
 python = "^3.11"
 dependency-injector = "4.41.0"
-fastapi = {extras = ["all"], version = "^0.110.0"}
+fastapi = { extras = ["all"], version = "^0.110.0" }
 sqlalchemy = "^2.0.28"
 alembic = "^1.13.1"
 psycopg2 = "^2.9.9"
 asyncpg = "^0.28.0"
-a8t-tools = {version = "^0.2.0", extras = ["all"], source = "gitlab"}
+a8t-tools = { version = "^0.2.0", extras = ["all"], source = "gitlab" }
+typer = "^0.10.0"
+logging = "^0.4.9.6"
 
 
 [[tool.poetry.source]]

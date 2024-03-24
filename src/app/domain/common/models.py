@@ -1,11 +1,66 @@
 import secrets
+import datetime
+import uuid
 
-from sqlalchemy import Column, Integer, String, ForeignKey, JSON, Float, Date, DateTime
+import sqlalchemy as sa
+from sqlalchemy import orm, Column, Integer, String, ForeignKey, JSON, Float, Date, DateTime
 from sqlalchemy.orm import relationship
-from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.sql import func
+from sqlalchemy.dialects.postgresql import ARRAY, UUID
 
-Base = declarative_base()
+
+@orm.as_declarative()
+class Base:
+    __tablename__: str
+
+    id: orm.Mapped[uuid.UUID] = orm.mapped_column(UUID(as_uuid=True), primary_key=True, default=uuid.uuid4, index=True)
+    created_at: orm.Mapped[datetime.datetime] = orm.mapped_column(sa.DateTime(timezone=True), server_default=func.now())
+    updated_at: orm.Mapped[datetime.datetime] = orm.mapped_column(
+        sa.DateTime(timezone=True), server_default=func.now(), onupdate=func.now()
+    )
+
+
+class Attachment(Base):
+    __tablename__ = "attachment"
+
+    name: orm.Mapped[str]
+    path: orm.Mapped[str]
+    uri: orm.Mapped[str | None]
+
+
+class User(Base):
+    __tablename__ = "user"
+
+    username: orm.Mapped[str] = orm.mapped_column(sa.String, unique=True)
+    status: orm.Mapped[str]
+    password_hash: orm.Mapped[str]
+    avatar_attachment_id: orm.Mapped[uuid.UUID] = orm.mapped_column(
+        UUID(as_uuid=True),
+        sa.ForeignKey("attachment.id", ondelete="SET NULL"),
+        index=True,
+        nullable=True,
+    )
+    permissions: orm.Mapped[set[str] | None] = orm.mapped_column(ARRAY(sa.String))
+
+    avatar_attachment: orm.Mapped["Attachment"] = orm.relationship(
+        "Attachment",
+        backref="user_avatar_attachment",
+        foreign_keys=[avatar_attachment_id],
+        uselist=False,
+    )
+    tokens: orm.Mapped[list["Token"]] = orm.relationship("Token")
+
+
+class Token(Base):
+    __tablename__ = "tokens"
+
+    id = Column(Integer, primary_key=True)
+    user_id: orm.Mapped[uuid.UUID] = orm.mapped_column(
+        UUID(as_uuid=True),
+        sa.ForeignKey("user.id", ondelete="CASCADE"),
+        index=True,
+        nullable=False,
+    )
 
 
 class Role(Base):
@@ -13,19 +68,6 @@ class Role(Base):
     id = Column(Integer, primary_key=True)
     name = Column(String, nullable=False)
     permissions = Column(JSON)
-
-
-class User(Base):
-    __tablename__ = "user"
-
-    id = Column(Integer, primary_key=True)
-    email = Column(String, nullable=False)
-    hashed_password = Column(String, nullable=False)
-    role_id = Column(Integer, ForeignKey(Role.id))
-
-    role = relationship("Role", backref="users")
-    route_ratings = relationship("RouteRating", back_populates="user")
-    feedbacks = relationship("Feedback", back_populates="user")
 
 
 class Survey(Base):
@@ -72,7 +114,7 @@ class RouteRating(Base):
 
 
 class HistoricalEvent(Base):
-    __tablename__ = "historical_events"
+    __tablename__ = "historical_event"
     id = Column(Integer, primary_key=True)
     name = Column(String)
     event_date = Column(Date)
