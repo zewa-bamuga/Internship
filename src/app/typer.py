@@ -7,7 +7,7 @@ import typer
 from loguru import logger
 
 import src.app.domain
-from app.containers import Container
+from src.app.containers import Container
 from src.app.domain.users.core.schemas import UserCreate
 from src.app.domain.users.permissions.schems import BasePermissions
 from a8t_tools.db.exceptions import DatabaseError
