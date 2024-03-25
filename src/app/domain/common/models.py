@@ -98,19 +98,25 @@ class Question(Base):
 class UserResponse(Base):
     __tablename__ = "user_response"
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey(User.id))
+    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id))
     survey_id = Column(Integer, ForeignKey(Survey.id))
+    created_at = Column(DateTime, default=func.now, nullable=False)
+    updated_at = Column(DateTime, default=func.now, onupdate=func.now, nullable=False)
+
 
 
 class RouteRating(Base):
     __tablename__ = "route_rating"
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey(User.id))
+    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id))
     question_id = Column(Integer, ForeignKey(Question.id))
     rating = Column(Float)
+    created_at = Column(DateTime, default=func.now, nullable=False)
+    updated_at = Column(DateTime, default=func.now, onupdate=func.now, nullable=False)
 
     user = relationship("User", backref="route_ratings")
     question = relationship("Question")
+
 
 
 class HistoricalEvent(Base):
@@ -124,19 +130,22 @@ class HistoricalEvent(Base):
 class Feedback(Base):
     __tablename__ = "feedback"
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id), nullable=False)
     text = Column(String, nullable=False)
     device_name = Column(String)
     os_version = Column(String)
     app_version = Column(String)
+    created_at = Column(DateTime, default=func.now)
+    updated_at = Column(DateTime, default=func.now, onupdate=func.now)
 
     user = relationship("User", backref="feedbacks")
+
 
 
 class PasswordResetCode(Base):
     __tablename__ = "password_reset_code"
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey(User.id), nullable=False)
+    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id), nullable=False)
     code = Column(String, nullable=False)
     created_at = Column(DateTime, default=func.now)
 
@@ -147,8 +156,10 @@ class PasswordResetCode(Base):
         return secrets.token_urlsafe(6)
 
 
+
 class FavoriteRoute(Base):
     __tablename__ = "favorite_route"
     id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey(User.id))
+    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id))
     question_id = Column(Integer, ForeignKey(Question.id))
+
