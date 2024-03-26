@@ -11,6 +11,7 @@ from a8t_tools.logging.utils import setup_logging
 from src.app.config import Settings
 
 from src.app.domain.storage.attachments.containers import AttachmentContainer
+from src.app.domain.users.containers import UserContainer
 
 
 class Container(containers.DeclarativeContainer):
@@ -65,4 +66,11 @@ class Container(containers.DeclarativeContainer):
 
     user = providers.Container(
         UserContainer,
+        transaction=transaction,
+        secret_key=config.security.secret_key,
+        private_key=config.security.private_key,
+        public_key=config.security.public_key,
+        pwd_context=config.security.pwd_context,
+        access_expiration_time=config.security.access_expiration_min,
+        refresh_expiration_time=config.security.refresh_expiration_min,
     )

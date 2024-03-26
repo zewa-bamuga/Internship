@@ -3,10 +3,15 @@ import uuid
 from typing import Any
 
 from a8t_tools.security import tokens
+from a8t_tools.security.hashing import PasswordHashService
 
+from src.app.domain.common import enums
+from src.app.domain.common.exceptions import AuthError
+from src.app.domain.users.auth.queries import TokenPayloadQuery
 from src.app.domain.users.auth.repositories import TokenRepository
 from src.app.domain.users.auth.schemas import TokenResponse, TokenInfo, TokenPayload
-from src.app.domain.users.core.schemas import UserInternal
+from src.app.domain.users.core.queries import UserRetrieveQuery, UserRetrieveByUsernameQuery
+from src.app.domain.users.core.schemas import UserInternal, UserCredentials
 
 
 class TokenCreateCommand:
@@ -49,3 +54,42 @@ class TokenRefreshCommand:
         self.query = query
         self.command = command
         self.user_query = user_query
+
+    async def __call__(self, refresh_token: str) -> TokenResponse:
+        try:
+            token_payload: TokenPayload = await self.query(refresh_token)
+        except AuthError as e:
+            token_payload: TokenPayload = await self.query(refresh_token, validate=False)
+            await self.repository.delete_tokens(token_payload.sub)
+            raise e
+
+        user_tokens = await self.repository.get_token_info(token_payload.sub)
+
+        if not user_tokens or token_payload.sub != user_tokens.token_id:
+            raise AuthError(code=enums.AuthErrorCodes.invalid_token)
+
+        await self.repository.delete_tokens(token_payload.sub)
+
+        return await self.command(await self.user_query(user_tokens.user_id))
+
+
+class UserAuthenticateCommand:
+    def __init__(
+            self,
+            user_retrieve_by_username_query: UserRetrieveByUsernameQuery,
+            password_hash_service: PasswordHashService,
+            command: TokenCreateCommand,
+    ) -> None:
+        self.user_retrieve_by_username_query = user_retrieve_by_username_query
+        self.password_hash_service = password_hash_service
+        self.command = command
+
+    async def __call__(self, payload: UserCredentials) -> TokenResponse:
+        user = await self.user_retrieve_by_username_query(payload.username)
+        if not user or not await self.password_hash_service.verify(
+                payload.password,
+                user.password_hash,
+        ):
+            raise AuthError(code=enums.AuthErrorCodes.invalid_credentials)
+
+        return await self.command(user)

@@ -4,5 +4,5 @@ from a8t_tools.security.permissions import PermissionsBase
 
 
 class BasePermissions(PermissionsBase):
-    superusesr = enum.auto()
+    superuser = enum.auto()
     authenticated = enum.auto()
