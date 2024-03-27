@@ -6,8 +6,8 @@ from contextlib import asynccontextmanager
 from collections.abc import AsyncIterator
 from typing import IO
 
-from src.app.domain.storage.attachments import schemas
-from src.app.domain.storage.attachments.repositories import AttachmentRepository
+from app.domain.storage.attachments import schemas
+from app.domain.storage.attachments.repositories import AttachmentRepository
 
 
 class AttachmentCreateCommand:

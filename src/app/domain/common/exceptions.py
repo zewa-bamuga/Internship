@@ -37,7 +37,7 @@ class NotFoundError(GenericApiError):
 
 
 class AuthError(GenericApiError):
-    cod: ErrorCodes = ErrorCodes.auth_error
+    code: ErrorCodes = ErrorCodes.auth_error
     message: str = "Invalid credentails"
     status_code: int = 401
 

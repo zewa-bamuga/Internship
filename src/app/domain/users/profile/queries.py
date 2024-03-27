@@ -1,7 +1,7 @@
-from src.app.domain.users.auth.queries import CurrentUserQuery
-from src.app.domain.users.core.schemas import UserDetails
-from src.app.domain.users.permissions.schemas import BasePermissions
-from src.app.domain.users.permissions.services import UserPermissionService
+from app.domain.users.auth.queries import CurrentUserQuery
+from app.domain.users.core.schemas import UserDetails
+from app.domain.users.permissions.schemas import BasePermissions
+from app.domain.users.permissions.services import UserPermissionService
 
 
 class UserProfileMeQuery:

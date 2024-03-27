@@ -5,9 +5,9 @@ from datetime import datetime
 
 import pg
 
-from src.app.domain.common.enums import UserStatuses
-from src.app.domain.common.schemas import APIModel
-from src.app.domain.storage.attachments.schemas import Attachment
+from app.domain.common.enums import UserStatuses
+from app.domain.common.schemas import APIModel
+from app.domain.storage.attachments.schemas import Attachment
 
 from a8t_tools.db import pagination as pg
 from a8t_tools.db import sorting as sr

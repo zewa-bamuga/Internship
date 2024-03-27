@@ -5,9 +5,9 @@ from a8t_tools.db.sorting import SortingData, apply_sorting
 from a8t_tools.db.transactions import AsyncDbTransaction
 from sqlalchemy import select, insert
 
-from src.app.domain.common import models
-from src.app.domain.common.schemas import IdContainer
-from src.app.domain.storage.attachments import schemas
+from app.domain.common import models
+from app.domain.common.schemas import IdContainer
+from app.domain.storage.attachments import schemas
 
 
 class AttachmentRepository:

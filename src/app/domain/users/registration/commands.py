@@ -1,5 +1,5 @@
-from src.app.domain.users.core.commands import UserCreateCommand
-from src.app.domain.users.core.schemas import UserCreate, UserCredentials, UserDetails
+from app.domain.users.core.commands import UserCreateCommand
+from app.domain.users.core.schemas import UserCreate, UserCredentials, UserDetails
 from a8t_tools.security.hashing import PasswordHashService
 
 

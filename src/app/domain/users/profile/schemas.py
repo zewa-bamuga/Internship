@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from src.app.domain.common.schemas import APIModel
+from app.domain.common.schemas import APIModel
 
 
 class UserProfilePartialUpdate(APIModel):

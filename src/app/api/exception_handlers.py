@@ -5,8 +5,8 @@ from fastapi import Request
 from pydantic import BaseModel
 from starlette.responses import JSONResponse
 
-from src.app.api.schemas import AuthApiError, SimpleApiError
-from src.app.domain.common import enums, exceptions
+from app.api.schemas import AuthApiError, SimpleApiError
+from app.domain.common import enums, exceptions
 
 
 async def universal_exception_handler(request: Request, exc: Exception) -> JSONResponse:

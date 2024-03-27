@@ -1,9 +1,9 @@
 from uuid import UUID
 
-from src.app.domain.users.core.queries import UserListQuery, UserRetrieveQuery
-from src.app.domain.users.core.schemas import User, UserDetailsFull, UserListRequestSchema
-from src.app.domain.users.permissions.schemas import BasePermissions
-from src.app.domain.users.permissions.services import UserPermissionService
+from app.domain.users.core.queries import UserListQuery, UserRetrieveQuery
+from app.domain.users.core.schemas import User, UserDetailsFull, UserListRequestSchema
+from app.domain.users.permissions.schemas import BasePermissions
+from app.domain.users.permissions.services import UserPermissionService
 from a8t_tools.db.pagination import Paginated
 
 

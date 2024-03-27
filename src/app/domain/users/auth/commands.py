@@ -5,13 +5,13 @@ from typing import Any
 from a8t_tools.security import tokens
 from a8t_tools.security.hashing import PasswordHashService
 
-from src.app.domain.common import enums
-from src.app.domain.common.exceptions import AuthError
-from src.app.domain.users.auth.queries import TokenPayloadQuery
-from src.app.domain.users.auth.repositories import TokenRepository
-from src.app.domain.users.auth.schemas import TokenResponse, TokenInfo, TokenPayload
-from src.app.domain.users.core.queries import UserRetrieveQuery, UserRetrieveByUsernameQuery
-from src.app.domain.users.core.schemas import UserInternal, UserCredentials
+from app.domain.common import enums
+from app.domain.common.exceptions import AuthError
+from app.domain.users.auth.queries import TokenPayloadQuery
+from app.domain.users.auth.repositories import TokenRepository
+from app.domain.users.auth.schemas import TokenResponse, TokenInfo, TokenPayload
+from app.domain.users.core.queries import UserRetrieveQuery, UserRetrieveByUsernameQuery
+from app.domain.users.core.schemas import UserInternal, UserCredentials
 
 
 class TokenCreateCommand:

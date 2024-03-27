@@ -1,10 +1,10 @@
 import uuid
 
-from src.app.domain.users.core import schemas
-from src.app.domain.users.core.commands import UserPartialUpdateCommand
-from src.app.domain.users.permissions.schemas import BasePermissions
-from src.app.domain.users.permissions.services import UserPermissionService
-from src.app.domain.users.registration.commands import UserRegisterCommand
+from app.domain.users.core import schemas
+from app.domain.users.core.commands import UserPartialUpdateCommand
+from app.domain.users.permissions.schemas import BasePermissions
+from app.domain.users.permissions.services import UserPermissionService
+from app.domain.users.registration.commands import UserRegisterCommand
 
 
 class UserManagementCreateCommand:

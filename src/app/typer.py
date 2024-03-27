@@ -6,10 +6,10 @@ from typing import Any
 import typer
 from loguru import logger
 
-import src.app.domain
-from src.app.containers import Container
-from src.app.domain.users.core.schemas import UserCreate
-from src.app.domain.users.permissions.schemas import BasePermissions
+import app.domain
+from app.containers import Container
+from app.domain.users.core.schemas import UserCreate
+from app.domain.users.permissions.schemas import BasePermissions
 from a8t_tools.db.exceptions import DatabaseError
 
 
@@ -27,7 +27,7 @@ def async_to_sync(fn: Callable[..., Any]) -> Callable[..., Any]:
 
 def create_container() -> Container:
     container = Container()
-    container.wire(packages=[src.app.domain])
+    container.wire(packages=[app.domain])
     container.init_resources()
     return container
 

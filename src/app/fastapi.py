@@ -5,16 +5,16 @@ from sentry_sdk.integrations.asgi import SentryAsgiMiddleware
 from starlette.middleware.cors import CORSMiddleware
 
 import app
-import src.app.domain
-from src.app.api import endpoints, exception_handlers
-from src.app.api.deps import user_token_dep_factory
-from src.app.config import Settings
-from src.app.containers import Container
+import app.domain
+from app.api import endpoints, exception_handlers
+from app.api.deps import user_token_dep_factory
+from app.config import Settings
+from app.containers import Container
 
 
 def create_fastapi_app(project_name: str, version: str, description: str) -> FastAPI:
     container = Container()
-    container.wire(packages=[src.app.domain])
+    container.wire(packages=[app.domain])
     container.init_resources()
 
     config: Settings = Settings(**container.config())

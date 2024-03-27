@@ -1,8 +1,8 @@
 import uuid
 from sqlalchemy import insert, select, delete
 
-from src.app.domain.users.auth import schemas
-from src.app.domain.common import models
+from app.domain.users.auth import schemas
+from app.domain.common import models
 
 from a8t_tools.db.transactions import AsyncDbTransaction
 

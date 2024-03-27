@@ -9,9 +9,9 @@ from sqlalchemy import ColumnElement, and_
 from sqlalchemy.orm import selectinload
 from sqlalchemy.sql.base import ExecutableOption
 
-from src.app.domain.common import models, enums
-from src.app.domain.common.schemas import IdContainer
-from src.app.domain.users.core import schemas
+from app.domain.common import models, enums
+from app.domain.common.schemas import IdContainer
+from app.domain.users.core import schemas
 
 
 class UserRepository(CrudRepositoryMixin[models.User]):

@@ -3,12 +3,12 @@ from dependency_injector import containers, providers
 from a8t_tools.db.transactions import AsyncDbTransaction
 from a8t_tools.storage.facade import FileStorage
 
-from src.app.domain.storage.attachments.commands import AttachmentCreateCommand
-from src.app.domain.storage.attachments.queries import (
+from app.domain.storage.attachments.commands import AttachmentCreateCommand
+from app.domain.storage.attachments.queries import (
     AttachmentListQuery,
     AttachmentRetrieveQuery,
 )
-from src.app.domain.storage.attachments.repositories import AttachmentRepository
+from app.domain.storage.attachments.repositories import AttachmentRepository
 
 
 class AttachmentContainer(containers.DeclarativeContainer):

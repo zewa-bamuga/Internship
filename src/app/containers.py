@@ -8,10 +8,9 @@ from a8t_tools.storage.local_storage import LocalStorageBackend
 from a8t_tools.storage.s3_storage import S3StorageBackend
 from a8t_tools.logging.utils import setup_logging
 
-from src.app.config import Settings
-
-from src.app.domain.storage.attachments.containers import AttachmentContainer
-from src.app.domain.users.containers import UserContainer
+from app.config import Settings
+from app.domain.storage.attachments.containers import AttachmentContainer
+from app.domain.users.containers import UserContainer
 
 
 class Container(containers.DeclarativeContainer):

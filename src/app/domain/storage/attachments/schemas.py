@@ -4,7 +4,7 @@ from datetime import datetime
 from typing import IO
 from uuid import UUID
 
-from src.app.domain.common.schemas import APIModel
+from app.domain.common.schemas import APIModel
 from a8t_tools.db import pagination as pg
 from a8t_tools.db import sorting as sr
 

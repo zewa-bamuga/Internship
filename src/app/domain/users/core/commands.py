@@ -2,10 +2,10 @@ from uuid import UUID
 
 from loguru import logger
 
-from src.app.domain.common import enums
-from src.app.domain.common.schemas import IdContainer
-from src.app.domain.users.core import schemas
-from src.app.domain.users.core.repositories import UserRepository
+from app.domain.common import enums
+from app.domain.common.schemas import IdContainer
+from app.domain.users.core import schemas
+from app.domain.users.core.repositories import UserRepository
 from a8t_tools.bus.producer import TaskProducer
 
 

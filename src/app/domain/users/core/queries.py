@@ -2,9 +2,9 @@ from uuid import UUID
 
 from a8t_tools.db.pagination import Paginated
 
-from src.app.domain.common.exceptions import NotFoundError
-from src.app.domain.users.core import schemas
-from src.app.domain.users.core.repositories import UserRepository
+from app.domain.common.exceptions import NotFoundError
+from app.domain.users.core import schemas
+from app.domain.users.core.repositories import UserRepository
 
 
 class UserListQuery:

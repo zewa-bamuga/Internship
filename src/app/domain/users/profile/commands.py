@@ -1,9 +1,9 @@
-from src.app.domain.users.auth.queries import CurrentUserQuery
-from src.app.domain.users.core.commands import UserPartialUpdateCommand
-from src.app.domain.users.core.schemas import UserPartialUpdateFull
-from src.app.domain.users.permissions.schemas import BasePermissions
-from src.app.domain.users.permissions.services import UserPermissionService
-from src.app.domain.users.profile.schemas import UserProfilePartialUpdate
+from app.domain.users.auth.queries import CurrentUserQuery
+from app.domain.users.core.commands import UserPartialUpdateCommand
+from app.domain.users.core.schemas import UserPartialUpdateFull
+from app.domain.users.permissions.schemas import BasePermissions
+from app.domain.users.permissions.services import UserPermissionService
+from app.domain.users.profile.schemas import UserProfilePartialUpdate
 
 
 class UserProfilePartialUpdateCommand:

@@ -1,42 +1,42 @@
 from dependency_injector import containers, providers
 from passlib.context import CryptContext
 
-from src.app.domain.users.auth.commands import (
+from app.domain.users.auth.commands import (
     TokenCreateCommand,
     TokenRefreshCommand,
     UserAuthenticateCommand,
 )
-from src.app.domain.users.auth.queries import (
+from app.domain.users.auth.queries import (
     CurrentUserQuery,
     CurrentUserTokenPayloadQuery,
     CurrentUserTokenQuery,
     TokenPayloadQuery,
 )
-from src.app.domain.users.auth.repositories import TokenRepository
-from src.app.domain.users.core.commands import (
+from app.domain.users.auth.repositories import TokenRepository
+from app.domain.users.core.commands import (
     UserActivateCommand,
     UserCreateCommand,
     UserPartialUpdateCommand,
 )
-from src.app.domain.users.core.queries import (
+from app.domain.users.core.queries import (
     UserListQuery,
     UserRetrieveByUsernameQuery,
     UserRetrieveQuery,
 )
-from src.app.domain.users.core.repositories import UserRepository
-from src.app.domain.users.management.commands import (
+from app.domain.users.core.repositories import UserRepository
+from app.domain.users.management.commands import (
     UserManagementCreateCommand,
     UserManagementPartialUpdateCommand,
 )
-from src.app.domain.users.management.queries import (
+from app.domain.users.management.queries import (
     UserManagementListQuery,
     UserManagementRetrieveQuery,
 )
-from src.app.domain.users.permissions.queries import UserPermissionListQuery
-from src.app.domain.users.permissions.services import UserPermissionService
-from src.app.domain.users.profile.commands import UserProfilePartialUpdateCommand
-from src.app.domain.users.profile.queries import UserProfileMeQuery
-from src.app.domain.users.registration.commands import UserRegisterCommand
+from app.domain.users.permissions.queries import UserPermissionListQuery
+from app.domain.users.permissions.services import UserPermissionService
+from app.domain.users.profile.commands import UserProfilePartialUpdateCommand
+from app.domain.users.profile.queries import UserProfileMeQuery
+from app.domain.users.registration.commands import UserRegisterCommand
 from a8t_tools.bus.producer import TaskProducer
 from a8t_tools.db.transactions import AsyncDbTransaction
 from a8t_tools.security.hashing import PasswordHashService

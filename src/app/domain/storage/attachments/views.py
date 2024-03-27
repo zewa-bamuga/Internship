@@ -4,11 +4,11 @@ from a8t_tools.db import pagination, sorting
 from dependency_injector import wiring
 from fastapi import APIRouter, Depends, UploadFile
 
-from src.app.api import deps
-from src.app.containers import Container
-from src.app.domain.storage.attachments import schemas
-from src.app.domain.storage.attachments.commands import AttachmentCreateCommand
-from src.app.domain.storage.attachments.queries import (
+from app.api import deps
+from app.containers import Container
+from app.domain.storage.attachments import schemas
+from app.domain.storage.attachments.commands import AttachmentCreateCommand
+from app.domain.storage.attachments.queries import (
     AttachmentListQuery,
     AttachmentRetrieveQuery,
 )

@@ -1,7 +1,7 @@
 from uuid import UUID
 
-from src.app.domain.users.core.queries import UserRetrieveQuery
-from src.app.domain.users.permissions.schemas import BasePermissions
+from app.domain.users.core.queries import UserRetrieveQuery
+from app.domain.users.permissions.schemas import BasePermissions
 
 
 class UserPermissionListQuery:
