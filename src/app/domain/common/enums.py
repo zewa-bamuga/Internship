@@ -2,7 +2,7 @@ import enum
 
 
 class ErrorCodes(enum.StrEnum):
-    api = error = enum.auto()
+    api_error = enum.auto()
     not_found = enum.auto()
     auth_error = enum.auto()
     permission_error = enum.auto()

@@ -67,7 +67,7 @@ class UserContainer(containers.DeclarativeContainer):
 
     list_query = providers.Factory(
         UserListQuery,
-        repository=repository
+        repository=repository,
     )
 
     retrieve_query = providers.Factory(

@@ -14,9 +14,11 @@ alembic = "^1.13.1"
 psycopg2 = "^2.9.9"
 asyncpg = "^0.28.0"
 a8t-tools = { version = "^0.2.0", extras = ["all"], source = "gitlab" }
+passlib = {version = "1.7.4", extras = ["bcrypt"]}
 typer = "^0.10.0"
 logging = "^0.4.9.6"
 pg = "^0.1"
+bcrypt = "^3.2.0"
 
 
 [[tool.poetry.source]]

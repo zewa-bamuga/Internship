@@ -1,14 +1,11 @@
 import enum
 from dataclasses import dataclass
-from uuid import UUID
 from datetime import datetime
-
-import pg
+from uuid import UUID
 
 from app.domain.common.enums import UserStatuses
 from app.domain.common.schemas import APIModel
 from app.domain.storage.attachments.schemas import Attachment
-
 from a8t_tools.db import pagination as pg
 from a8t_tools.db import sorting as sr
 
@@ -21,26 +18,12 @@ class User(APIModel):
     created_at: datetime
 
 
-class UserCreate(APIModel):
-    username: str
-    password_hash: str
-    avatar_attachment_id: UUID | None = None
-    permission: set[str] | None = None
-
-
-class UserInternal(APIModel):
-    id: UUID
-    username: str
-    password_hash: str
-    permissions: set[str] | None = None
-    avatar_attachment_id: UUID | None = None
-    avatar_attachment: Attachment | None = None
-    status: UserStatuses
-    created_at: datetime
-
-
 class UserDetails(User):
     avatar_attachment: Attachment | None = None
+
+
+class UserDetailsFull(UserDetails):
+    permissions: set[str] | None = None
 
 
 class UserCredentials(APIModel):
@@ -48,8 +31,15 @@ class UserCredentials(APIModel):
     password: str
 
 
-class UserDetailsFull(UserDetails):
+class UserCreate(APIModel):
+    username: str
+    password_hash: str
+    avatar_attachment_id: UUID | None = None
     permissions: set[str] | None = None
+
+
+class UserCreateFull(UserCreate):
+    status: UserStatuses
 
 
 class UserPartialUpdate(APIModel):
@@ -63,6 +53,17 @@ class UserPartialUpdateFull(UserPartialUpdate):
     password_hash: str | None = None
 
 
+class UserInternal(APIModel):
+    id: UUID
+    username: str
+    password_hash: str
+    permissions: set[str] | None = None
+    avatar_attachment_id: UUID | None = None
+    avatar_attachment: Attachment | None = None
+    status: UserStatuses
+    created_at: datetime
+
+
 class UserSorts(enum.StrEnum):
     id = enum.auto()
     username = enum.auto()
@@ -74,3 +75,9 @@ class UserSorts(enum.StrEnum):
 class UserListRequestSchema:
     pagination: pg.PaginationCallable[User] | None = None
     sorting: sr.SortingData[UserSorts] | None = None
+
+
+@dataclass
+class UserWhere:
+    id: UUID | None = None
+    username: str | None = None

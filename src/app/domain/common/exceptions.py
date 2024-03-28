@@ -1,8 +1,7 @@
 from typing import Any
 
-from src.app.domain.common import enums
-
-from src.app.domain.common.enums import ErrorCodes
+from app.domain.common import enums
+from app.domain.common.enums import ErrorCodes
 
 
 class GenericApiError(Exception):
@@ -12,12 +11,12 @@ class GenericApiError(Exception):
     headers: dict[str, str] | None = None
 
     def __init__(
-            self,
-            code: ErrorCodes | None = None,
-            message: str | None = None,
-            status_code: int | None = None,
-            headers: dict[str, str] | None = None,
-            *args: Any,
+        self,
+        code: ErrorCodes | None = None,
+        message: str | None = None,
+        status_code: int | None = None,
+        headers: dict[str, str] | None = None,
+        *args: Any,
     ) -> None:
         if code is not None:
             self.code = code
@@ -38,14 +37,14 @@ class NotFoundError(GenericApiError):
 
 class AuthError(GenericApiError):
     code: ErrorCodes = ErrorCodes.auth_error
-    message: str = "Invalid credentails"
+    message: str = "Invalid credentials"
     status_code: int = 401
 
     def __init__(
-            self,
-            code: enums.AuthErrorCodes,
-            *args: Any,
-            **kwargs: Any,
+        self,
+        code: enums.AuthErrorCodes,
+        *args: Any,
+        **kwargs: Any,
     ) -> None:
         self.payload = {
             "code": code,

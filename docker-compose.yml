@@ -38,7 +38,8 @@ services:
     restart: "unless-stopped"
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.api.rule=PathPrefix(`/api`)"
+      - "traefik.http.routers.fastapi_api.rule=PathPrefix(`/api`)"
+
 
   db-init:
     <<: *core
@@ -57,3 +58,5 @@ services:
       - .env.example
       - .env
     restart: "unless-stopped"
+    ports:
+      - "5432:5432"

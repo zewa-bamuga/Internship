@@ -1,18 +1,17 @@
 import secrets
-import os  # Добавлен импорт модуля os для работы с переменными среды
+import os
 from typing import Any
 
 from passlib.context import CryptContext
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from dotenv import load_dotenv  # Импорт функции load_dotenv для загрузки переменных среды из файла .env
+from dotenv import load_dotenv
 
-# Загрузить переменные среды из файла .env
 load_dotenv()
 
-# Получить значения переменных среды SECURITY_PRIVATE_KEY и SECURITY_PUBLIC_KEY из файла .env
 SECURITY_PRIVATE_KEY = os.getenv("SECURITY_PRIVATE_KEY")
 SECURITY_PUBLIC_KEY = os.getenv("SECURITY_PUBLIC_KEY")
+
 
 class ApiSettings(BaseSettings):
     prefix: str = Field(default="/api")
@@ -29,7 +28,8 @@ class SecuritySettings(BaseSettings):
         bcrypt__rounds=10,
     )
     secres_key: str = Field(default=secrets.token_urlsafe(32))
-    private_key: str = Field(default=SECURITY_PRIVATE_KEY, description="Private RSA key")  # Используется значение из .env
+    private_key: str = Field(default=SECURITY_PRIVATE_KEY,
+                             description="Private RSA key")  # Используется значение из .env
     public_key: str = Field(default=SECURITY_PUBLIC_KEY, description="Public RSA key")  # Используется значение из .env
 
     access_expiration_min: int = Field(default=15)
@@ -61,7 +61,6 @@ class DatabaseSettings(BaseSettings):
 class MessageQueueSettings(BaseSettings):
     broker_uri: str | None = Field(default=None)
     model_config = SettingsConfigDict(env_prefix="MQ_")
-
 
 
 class StorageSettings(BaseSettings):  # Это Amazon S3, нужно ли мне это
