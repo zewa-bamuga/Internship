@@ -5,20 +5,6 @@ volumes:
   fastapi_media: { }
 
 services:
-  traefik:
-    image: traefik:v3.0
-    command:
-      - "--api.insecure=true"
-      - "--providers.docker"
-      - "--providers.docker.exposedByDefault=false"
-      - "--entrypoints.http.address=:80"
-    ports:
-      - "${APP_PORT:-80}:80"
-      - "${TRAEFIK_PORT:-8080}:8080"
-    volumes:
-      - /var/run/docker.sock:/var/run/docker.sock
-    restart: "unless-stopped"
-
   fastapi: &core
     build:
       context: .
@@ -36,9 +22,8 @@ services:
       - .env.example
       - .env
     restart: "unless-stopped"
-    labels:
-      - "traefik.enable=true"
-      - "traefik.http.routers.fastapi_api.rule=PathPrefix(`/api`)"
+    ports:
+      - "8000:8000"
 
 
   db-init:
@@ -47,9 +32,11 @@ services:
       - postgres
     restart: "no"
     command: /start-db-init.sh
+    ports:
+      - "8002:8002"
 
   postgres:
-    image: postgres:14
+    image: postgres:latest
     volumes:
       - postgres_data:/var/lib/postgresql/data/pgdata
     environment:
