@@ -3,6 +3,12 @@ run:
 		cp -n .env.example .env && \
 		docker-compose up -d --build --remove-orphans
 
+run-mac:
+	cp -f ./deploy/compose/local/docker-compose.yml docker-compose.yml && \
+	cp -f .env.example .env && \
+	docker-compose up -d --build --remove-orphans
+
+
 stop:
 	docker-compose down
 

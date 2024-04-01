@@ -23,8 +23,7 @@ services:
       - .env
     restart: "unless-stopped"
     ports:
-      - "8000:8000"
-
+      - 8000:80
 
   db-init:
     <<: *core
@@ -32,8 +31,7 @@ services:
       - postgres
     restart: "no"
     command: /start-db-init.sh
-    ports:
-      - "8002:8002"
+    ports: []
 
   postgres:
     image: postgres:latest
@@ -46,4 +44,4 @@ services:
       - .env
     restart: "unless-stopped"
     ports:
-      - "5432:5432"
+      - 5432:5432
