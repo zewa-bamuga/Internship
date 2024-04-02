@@ -29,8 +29,8 @@ class SecuritySettings(BaseSettings):
     )
     secres_key: str = Field(default=secrets.token_urlsafe(32))
     private_key: str = Field(default=SECURITY_PRIVATE_KEY,
-                             description="Private RSA key")  # Используется значение из .env
-    public_key: str = Field(default=SECURITY_PUBLIC_KEY, description="Public RSA key")  # Используется значение из .env
+                             description="Private RSA key")
+    public_key: str = Field(default=SECURITY_PUBLIC_KEY, description="Public RSA key")
 
     access_expiration_min: int = Field(default=15)
     refresh_expiration_min: int = Field(default=60 * 24 * 7)

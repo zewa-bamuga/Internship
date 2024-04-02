@@ -31,7 +31,7 @@ class Attachment(Base):
 class User(Base):
     __tablename__ = "user"
 
-    username: orm.Mapped[str] = orm.mapped_column(sa.String, unique=True)
+    email: orm.Mapped[str] = orm.mapped_column(sa.String, unique=True)
     status: orm.Mapped[str]
     password_hash: orm.Mapped[str]
     avatar_attachment_id: orm.Mapped[uuid.UUID] = orm.mapped_column(
@@ -61,6 +61,8 @@ class Token(Base):
         index=True,
         nullable=False,
     )
+    refresh_token_id: orm.Mapped[uuid.UUID] = orm.mapped_column(UUID(as_uuid=True))
+
 
 
 class Role(Base):

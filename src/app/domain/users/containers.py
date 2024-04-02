@@ -20,7 +20,7 @@ from app.domain.users.core.commands import (
 )
 from app.domain.users.core.queries import (
     UserListQuery,
-    UserRetrieveByUsernameQuery,
+    UserRetrieveByEmailQuery,
     UserRetrieveQuery,
 )
 from app.domain.users.core.repositories import UserRepository
@@ -75,8 +75,8 @@ class UserContainer(containers.DeclarativeContainer):
         repository=repository,
     )
 
-    retrieve_by_username_query = providers.Factory(
-        UserRetrieveByUsernameQuery,
+    retrieve_by_email_query = providers.Factory(
+        UserRetrieveByEmailQuery,
         repository=repository,
     )
 
@@ -167,7 +167,7 @@ class UserContainer(containers.DeclarativeContainer):
 
     authenticate_command = providers.Factory(
         UserAuthenticateCommand,
-        user_retrieve_by_username_query=retrieve_by_username_query,
+        user_retrieve_by_email_query=retrieve_by_email_query,
         password_hash_service=password_hash_service,
         command=token_create_command,
     )

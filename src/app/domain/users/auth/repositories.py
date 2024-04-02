@@ -11,7 +11,7 @@ class TokenRepository:
     def __init__(self, transaction: AsyncDbTransaction):
         self.transaction = transaction
 
-    async def crate_token_info(self, payload: schemas.TokenInfo) -> None:
+    async def create_token_info(self, payload: schemas.TokenInfo) -> None:
         stmt = insert(models.Token).values(
             {
                 "user_id": payload.user_id,

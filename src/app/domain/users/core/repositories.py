@@ -60,7 +60,7 @@ class UserRepository(CrudRepositoryMixin[models.User]):
         if where.id is not None:
             filters.append(models.User.id == where.id)
 
-        if where.username is not None:
-            filters.append(models.User.username == where.username)
+        if where.email is not None:
+            filters.append(models.User.email == where.email)
 
         return and_(*filters)

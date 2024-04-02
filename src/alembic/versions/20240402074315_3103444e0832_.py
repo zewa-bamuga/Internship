@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: da0d8af24cde
+Revision ID: 3103444e0832
 Revises: 
-Create Date: 2024-04-01 10:07:54.275779
+Create Date: 2024-04-02 07:43:15.636912
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = 'da0d8af24cde'
+revision: str = '3103444e0832'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -72,7 +72,7 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
-    sa.Column('username', sa.String(), nullable=False),
+    sa.Column('email', sa.String(), nullable=False),
     sa.Column('status', sa.String(), nullable=False),
     sa.Column('password_hash', sa.String(), nullable=False),
     sa.Column('avatar_attachment_id', sa.UUID(), nullable=True),
@@ -82,7 +82,7 @@ def upgrade() -> None:
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['avatar_attachment_id'], ['attachment.id'], ondelete='SET NULL'),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('username')
+    sa.UniqueConstraint('email')
     )
     op.create_index(op.f('ix_user_avatar_attachment_id'), 'user', ['avatar_attachment_id'], unique=False)
     op.create_index(op.f('ix_user_id'), 'user', ['id'], unique=False)
@@ -131,6 +131,7 @@ def upgrade() -> None:
     op.create_table('tokens',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.UUID(), nullable=False),
+    sa.Column('refresh_token_id', sa.UUID(), nullable=False),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ondelete='CASCADE'),

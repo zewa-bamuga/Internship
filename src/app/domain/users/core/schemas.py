@@ -3,6 +3,8 @@ from dataclasses import dataclass
 from datetime import datetime
 from uuid import UUID
 
+from pydantic import EmailStr
+
 from app.domain.common.enums import UserStatuses
 from app.domain.common.schemas import APIModel
 from app.domain.storage.attachments.schemas import Attachment
@@ -12,7 +14,7 @@ from a8t_tools.db import sorting as sr
 
 class User(APIModel):
     id: UUID
-    username: str
+    email: str
     status: UserStatuses
     avatar_attachment_id: UUID | None = None
     created_at: datetime
@@ -27,12 +29,12 @@ class UserDetailsFull(UserDetails):
 
 
 class UserCredentials(APIModel):
-    username: str
+    email: EmailStr
     password: str
 
 
 class UserCreate(APIModel):
-    username: str
+    email: EmailStr
     password_hash: str
     avatar_attachment_id: UUID | None = None
     permissions: set[str] | None = None
@@ -43,7 +45,7 @@ class UserCreateFull(UserCreate):
 
 
 class UserPartialUpdate(APIModel):
-    username: str | None = None
+    email: EmailStr | None = None
     avatar_attachment_id: UUID | None = None
     permissions: set[str] | None = None
     status: str | None = None
@@ -55,7 +57,7 @@ class UserPartialUpdateFull(UserPartialUpdate):
 
 class UserInternal(APIModel):
     id: UUID
-    username: str
+    email: EmailStr
     password_hash: str
     permissions: set[str] | None = None
     avatar_attachment_id: UUID | None = None
@@ -66,7 +68,7 @@ class UserInternal(APIModel):
 
 class UserSorts(enum.StrEnum):
     id = enum.auto()
-    username = enum.auto()
+    email = enum.auto()
     status = enum.auto()
     created_at = enum.auto()
 
@@ -80,4 +82,4 @@ class UserListRequestSchema:
 @dataclass
 class UserWhere:
     id: UUID | None = None
-    username: str | None = None
+    email: EmailStr | None = None
