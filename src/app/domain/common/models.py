@@ -64,7 +64,6 @@ class Token(Base):
     refresh_token_id: orm.Mapped[uuid.UUID] = orm.mapped_column(UUID(as_uuid=True))
 
 
-
 class Role(Base):
     __tablename__ = "role"
     id = Column(Integer, primary_key=True)
@@ -106,7 +105,6 @@ class UserResponse(Base):
     updated_at = Column(DateTime, default=func.now, onupdate=func.now, nullable=False)
 
 
-
 class RouteRating(Base):
     __tablename__ = "route_rating"
     id = Column(Integer, primary_key=True)
@@ -118,7 +116,6 @@ class RouteRating(Base):
 
     user = relationship("User", backref="route_ratings")
     question = relationship("Question")
-
 
 
 class HistoricalEvent(Base):
@@ -143,7 +140,6 @@ class Feedback(Base):
     user = relationship("User", backref="feedbacks")
 
 
-
 class PasswordResetCode(Base):
     __tablename__ = "password_reset_code"
     id = Column(Integer, primary_key=True)
@@ -157,12 +153,9 @@ class PasswordResetCode(Base):
     def generate_code(cls) -> str:
         return secrets.token_urlsafe(6)
 
-
-
     @classmethod
     def generate_code(cls) -> str:
         return secrets.token_urlsafe(6)
-
 
 
 class FavoriteRoute(Base):

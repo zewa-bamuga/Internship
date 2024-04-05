@@ -24,20 +24,9 @@ from app.domain.users.core.queries import (
     UserRetrieveQuery,
 )
 from app.domain.users.core.repositories import UserRepository
-from app.domain.users.management.commands import (
-    UserManagementCreateCommand,
-    UserManagementPartialUpdateCommand,
-)
-from app.domain.users.management.queries import (
-    UserManagementListQuery,
-    UserManagementRetrieveQuery,
-)
 from app.domain.users.permissions.queries import UserPermissionListQuery
 from app.domain.users.permissions.services import UserPermissionService
-from app.domain.users.profile.commands import UserProfilePartialUpdateCommand
-from app.domain.users.profile.queries import UserProfileMeQuery
 from app.domain.users.registration.commands import UserRegisterCommand
-from a8t_tools.bus.producer import TaskProducer
 from a8t_tools.db.transactions import AsyncDbTransaction
 from a8t_tools.security.hashing import PasswordHashService
 from a8t_tools.security.tokens import JwtHmacService, JwtRsaService, token_ctx_var
@@ -45,8 +34,6 @@ from a8t_tools.security.tokens import JwtHmacService, JwtRsaService, token_ctx_v
 
 class UserContainer(containers.DeclarativeContainer):
     transaction = providers.Dependency(instance_of=AsyncDbTransaction)
-
-    # task_producer = providers.Dependency(instance_of=TaskProducer)
 
     secret_key = providers.Dependency(instance_of=str)
 
@@ -83,7 +70,6 @@ class UserContainer(containers.DeclarativeContainer):
     create_command = providers.Factory(
         UserCreateCommand,
         repository=repository,
-        # task_producer=task_producer,
     )
 
     activate_command = providers.Factory(
@@ -178,41 +164,4 @@ class UserContainer(containers.DeclarativeContainer):
         query=token_payload_query,
         command=token_create_command,
         user_query=retrieve_query,
-    )
-
-    profile_me_query = providers.Factory(
-        UserProfileMeQuery,
-        permission_service=permission_service,
-        current_user_query=current_user_query,
-    )
-
-    profile_partial_update_command = providers.Factory(
-        UserProfilePartialUpdateCommand,
-        permission_service=permission_service,
-        current_user_query=current_user_query,
-        user_partial_update_command=partial_update_command,
-    )
-
-    management_list_query = providers.Factory(
-        UserManagementListQuery,
-        permission_service=permission_service,
-        query=list_query,
-    )
-
-    management_retrieve_query = providers.Factory(
-        UserManagementRetrieveQuery,
-        permission_service=permission_service,
-        query=retrieve_query,
-    )
-
-    management_create_command = providers.Factory(
-        UserManagementCreateCommand,
-        permission_service=permission_service,
-        command=register_command,
-    )
-
-    management_update_command = providers.Factory(
-        UserManagementPartialUpdateCommand,
-        permission_service=permission_service,
-        command=partial_update_command,
     )

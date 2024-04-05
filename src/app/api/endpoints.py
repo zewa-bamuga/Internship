@@ -2,8 +2,6 @@ from fastapi import APIRouter, status
 
 import app.domain.storage.attachments.views
 import app.domain.users.auth.views
-import app.domain.users.management.views
-import app.domain.users.profile.views
 import app.domain.users.registration.views
 from app.api import schemas
 
@@ -17,20 +15,6 @@ auth.include_router(
     app.domain.users.auth.views.router,
     prefix="/v1",
     tags=["Authentication"]
-)
-
-users_router = APIRouter(prefix="/user")
-users_router.include_router(
-    app.domain.users.profile.views.router,
-    prefix="/v1",
-    tags=["users"],
-)
-
-
-users_router.include_router(
-    app.domain.users.management.views.router,
-    prefix="/v1",
-    tags=["users"],
 )
 
 storage_router = APIRouter(prefix="/storage")
@@ -48,7 +32,5 @@ router = APIRouter(
     }
 )
 
-
 router.include_router(auth)
-router.include_router(users_router)
 router.include_router(storage_router)

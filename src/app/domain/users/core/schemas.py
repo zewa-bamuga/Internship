@@ -73,6 +73,10 @@ class UserSorts(enum.StrEnum):
     created_at = enum.auto()
 
 
+class UpdatePassword(APIModel):
+    email: EmailStr
+
+
 @dataclass
 class UserListRequestSchema:
     pagination: pg.PaginationCallable[User] | None = None

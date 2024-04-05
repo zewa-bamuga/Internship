@@ -15,8 +15,8 @@ router = APIRouter()
 )
 @wiring.inject
 async def authenticate(
-    payload: UserCredentials,
-    command: UserAuthenticateCommand = Depends(wiring.Provide[Container.user.authenticate_command]),
+        payload: UserCredentials,
+        command: UserAuthenticateCommand = Depends(wiring.Provide[Container.user.authenticate_command]),
 ) -> TokenResponse:
     return await command(payload)
 
@@ -27,7 +27,7 @@ async def authenticate(
 )
 @wiring.inject
 async def update_refresh_token(
-    refresh_token: str = Body(embed=True),
-    command: TokenRefreshCommand = Depends(wiring.Provide[Container.user.refresh_token_command]),
+        refresh_token: str = Body(embed=True),
+        command: TokenRefreshCommand = Depends(wiring.Provide[Container.user.refresh_token_command]),
 ) -> TokenResponse:
     return await command(refresh_token)

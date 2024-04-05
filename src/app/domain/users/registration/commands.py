@@ -5,9 +5,9 @@ from a8t_tools.security.hashing import PasswordHashService
 
 class UserRegisterCommand:
     def __init__(
-        self,
-        user_create_command: UserCreateCommand,
-        password_hash_service: PasswordHashService,
+            self,
+            user_create_command: UserCreateCommand,
+            password_hash_service: PasswordHashService,
     ) -> None:
         self.user_create_command = user_create_command
         self.password_hash_service = password_hash_service

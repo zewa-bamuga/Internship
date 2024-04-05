@@ -15,8 +15,8 @@ router = APIRouter()
 )
 @wiring.inject
 async def register(
-    payload: UserCredentials,
-    command: UserRegisterCommand = Depends(wiring.Provide[Container.user.register_command]),
+        payload: UserCredentials,
+        command: UserRegisterCommand = Depends(wiring.Provide[Container.user.register_command]),
 ) -> UserDetails:
     user_details = await command(payload)
     await send_hello(user_details)
