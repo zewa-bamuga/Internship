@@ -13,10 +13,10 @@ class UserCreateCommand:
     def __init__(
         self,
         repository: UserRepository,
-        task_producer: TaskProducer,
+        # task_producer: TaskProducer,
     ):
         self.repository = repository
-        self.task_producer = task_producer
+        # self.task_producer = task_producer
 
     async def __call__(self, payload: schemas.UserCreate) -> schemas.UserDetails:
         user_id_container = await self.repository.create_user(
@@ -26,17 +26,17 @@ class UserCreateCommand:
             )
         )
         logger.info("User created: {user_id}", user_id=user_id_container.id)
-        await self._enqueue_user_activation(user_id_container)
+        # await self._enqueue_user_activation(user_id_container)
         user = await self.repository.get_user_by_filter_or_none(schemas.UserWhere(id=user_id_container.id))
         assert user
         return schemas.UserDetails.model_validate(user)
 
-    async def _enqueue_user_activation(self, user_id_container: IdContainer) -> None:
-        await self.task_producer.fire_task(
-            enums.TaskNames.activate_user,
-            queue=enums.TaskQueues.main_queue,
-            user_id_container_dict=user_id_container.json_dict(),
-        )
+    # async def _enqueue_user_activation(self, user_id_container: IdContainer) -> None:
+    #     await self.task_producer.fire_task(
+    #         enums.TaskNames.activate_user,
+    #         queue=enums.TaskQueues.main_queue,
+    #         user_id_container_dict=user_id_container.json_dict(),
+    #     )
 
 
 class UserPartialUpdateCommand:

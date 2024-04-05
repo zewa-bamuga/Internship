@@ -8,7 +8,6 @@ run-mac:
 	cp -f .env.example .env && \
 	docker-compose up -d --build --remove-orphans
 
-
 stop:
 	docker-compose down
 

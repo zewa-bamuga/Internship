@@ -46,7 +46,7 @@ from a8t_tools.security.tokens import JwtHmacService, JwtRsaService, token_ctx_v
 class UserContainer(containers.DeclarativeContainer):
     transaction = providers.Dependency(instance_of=AsyncDbTransaction)
 
-    task_producer = providers.Dependency(instance_of=TaskProducer)
+    # task_producer = providers.Dependency(instance_of=TaskProducer)
 
     secret_key = providers.Dependency(instance_of=str)
 
@@ -83,7 +83,7 @@ class UserContainer(containers.DeclarativeContainer):
     create_command = providers.Factory(
         UserCreateCommand,
         repository=repository,
-        task_producer=task_producer,
+        # task_producer=task_producer,
     )
 
     activate_command = providers.Factory(

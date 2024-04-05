@@ -37,19 +37,19 @@ class Container(containers.DeclarativeContainer):
 
     unit_of_work = providers.Factory(UnitOfWork, transaction=transaction)
 
-    celery_app: providers.Provider[Celery] = providers.Singleton(Celery, "worker", broker=config.mq.broker_uri)
+    # celery_app: providers.Provider[Celery] = providers.Singleton(Celery, "worker", broker=config.mq.broker_uri)
 
-    celery_backend = providers.Factory(CeleryBackend, celery_app=celery_app)
+    # celery_backend = providers.Factory(CeleryBackend, celery_app=celery_app)
 
-    tasks_backend = celery_backend
+    # tasks_backend = celery_backend
 
-    consumers = providers.Resource(setup_consumers, tasks_backend=tasks_backend, tasks_params=config.tasks.params)
+    # consumers = providers.Resource(setup_consumers, tasks_backend=tasks_backend, tasks_params=config.tasks.params)
 
-    tasks_scheduler = celery_backend
+    # tasks_scheduler = celery_backend
 
-    schedules = providers.Resource(setup_schedule, scheduler=tasks_scheduler, raw_schedules=config.tasks.schedules)
+    # schedules = providers.Resource(setup_schedule, scheduler=tasks_scheduler, raw_schedules=config.tasks.schedules)
 
-    task_producer = providers.Factory(TaskProducer, backend=tasks_backend)
+    # task_producer = providers.Factory(TaskProducer, backend=tasks_backend)
 
     local_storage_backend = providers.Factory(
         LocalStorageBackend,
@@ -85,7 +85,7 @@ class Container(containers.DeclarativeContainer):
     user = providers.Container(
         UserContainer,
         transaction=transaction,
-        task_producer=task_producer,
+        # task_producer=task_producer,
         secret_key=config.security.secret_key,
         private_key=config.security.private_key,
         public_key=config.security.public_key,
