@@ -16,6 +16,7 @@ class UserRegisterCommand:
         return await self.user_create_command(
             UserCreate(
                 email=payload.email,
+                # username=payload.username,
                 password_hash=(await self.password_hash_service.hash(payload.password)),
                 avatar_attachment_id=None,
                 permissions=set(),

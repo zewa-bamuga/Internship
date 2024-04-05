@@ -31,6 +31,7 @@ class Attachment(Base):
 class User(Base):
     __tablename__ = "user"
 
+    username: orm.Mapped[str] = orm.mapped_column(sa.String, unique=True)
     email: orm.Mapped[str] = orm.mapped_column(sa.String, unique=True)
     status: orm.Mapped[str]
     password_hash: orm.Mapped[str]

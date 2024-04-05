@@ -14,6 +14,7 @@ from a8t_tools.db import sorting as sr
 
 class User(APIModel):
     id: UUID
+    # username: str
     email: str
     status: UserStatuses
     avatar_attachment_id: UUID | None = None
@@ -29,11 +30,13 @@ class UserDetailsFull(UserDetails):
 
 
 class UserCredentials(APIModel):
+    # username: str
     email: EmailStr
     password: str
 
 
 class UserCreate(APIModel):
+    # username: str
     email: EmailStr
     password_hash: str
     avatar_attachment_id: UUID | None = None
