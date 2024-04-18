@@ -40,12 +40,12 @@ class TokenPayloadQuery:
 
 class CurrentUserTokenPayloadQuery:
     def __init__(
-            self,
-            token_query: CurrentUserTokenQuery,
-            token_payload_querry: TokenPayloadQuery,
+        self,
+        token_query: CurrentUserTokenQuery,
+        token_payload_query: TokenPayloadQuery,
     ) -> None:
         self.token_query = token_query
-        self.token_payload_query = token_payload_querry
+        self.token_payload_query = token_payload_query
 
     async def __call__(self) -> schemas.TokenPayload | None:
         token = await self.token_query()

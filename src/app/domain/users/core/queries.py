@@ -26,9 +26,9 @@ class UserRetrieveQuery:
         return schemas.UserInternal.model_validate(result)
 
 
-class UserRetrieveByEmailQuery:
+class UserRetrieveByUsernameQuery:
     def __init__(self, repository: UserRepository):
         self.repository = repository
 
-    async def __call__(self, email: str) -> schemas.UserInternal | None:
-        return await self.repository.get_user_by_filter_or_none(schemas.UserWhere(email=email))
+    async def __call__(self, username: str) -> schemas.UserInternal | None:
+        return await self.repository.get_user_by_filter_or_none(schemas.UserWhere(username=username))

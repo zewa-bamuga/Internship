@@ -12,6 +12,10 @@ from app.domain.users.auth.queries import (
     CurrentUserTokenQuery,
     TokenPayloadQuery,
 )
+from app.domain.users.management.queries import (
+    UserManagementListQuery,
+    UserManagementRetrieveQuery,
+)
 from app.domain.users.auth.repositories import TokenRepository
 from app.domain.users.core.commands import (
     UserActivateCommand,
@@ -20,13 +24,15 @@ from app.domain.users.core.commands import (
 )
 from app.domain.users.core.queries import (
     UserListQuery,
-    UserRetrieveByEmailQuery,
+    UserRetrieveByUsernameQuery,
     UserRetrieveQuery,
 )
 from app.domain.users.core.repositories import UserRepository
 from app.domain.users.permissions.queries import UserPermissionListQuery
 from app.domain.users.permissions.services import UserPermissionService
 from app.domain.users.registration.commands import UserRegisterCommand
+from app.domain.users.profile.queries import UserProfileMeQuery
+from app.domain.users.profile.commands import UserProfilePartialUpdateCommand
 from a8t_tools.db.transactions import AsyncDbTransaction
 from a8t_tools.security.hashing import PasswordHashService
 from a8t_tools.security.tokens import JwtHmacService, JwtRsaService, token_ctx_var
@@ -62,8 +68,8 @@ class UserContainer(containers.DeclarativeContainer):
         repository=repository,
     )
 
-    retrieve_by_email_query = providers.Factory(
-        UserRetrieveByEmailQuery,
+    retrieve_by_username_query = providers.Factory(
+        UserRetrieveByUsernameQuery,
         repository=repository,
     )
 
@@ -153,7 +159,7 @@ class UserContainer(containers.DeclarativeContainer):
 
     authenticate_command = providers.Factory(
         UserAuthenticateCommand,
-        user_retrieve_by_email_query=retrieve_by_email_query,
+        user_retrieve_by_username_query=retrieve_by_username_query,
         password_hash_service=password_hash_service,
         command=token_create_command,
     )
@@ -164,4 +170,23 @@ class UserContainer(containers.DeclarativeContainer):
         query=token_payload_query,
         command=token_create_command,
         user_query=retrieve_query,
+    )
+
+    management_list_query = providers.Factory(
+        UserManagementListQuery,
+        permission_service=permission_service,
+        query=list_query,
+    )
+
+    profile_me_query = providers.Factory(
+        UserProfileMeQuery,
+        permission_service=permission_service,
+        current_user_query=current_user_query,
+    )
+
+    profile_partial_update_command = providers.Factory(
+        UserProfilePartialUpdateCommand,
+        permission_service=permission_service,
+        current_user_query=current_user_query,
+        user_partial_update_command=partial_update_command,
     )

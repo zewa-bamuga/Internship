@@ -10,7 +10,7 @@ from app.domain.common.exceptions import AuthError
 from app.domain.users.auth.queries import TokenPayloadQuery
 from app.domain.users.auth.repositories import TokenRepository
 from app.domain.users.auth.schemas import TokenResponse, TokenInfo, TokenPayload
-from app.domain.users.core.queries import UserRetrieveQuery, UserRetrieveByEmailQuery
+from app.domain.users.core.queries import UserRetrieveQuery, UserRetrieveByUsernameQuery
 from app.domain.users.core.schemas import UserInternal, UserCredentials
 
 
@@ -76,16 +76,16 @@ class TokenRefreshCommand:
 class UserAuthenticateCommand:
     def __init__(
             self,
-            user_retrieve_by_email_query: UserRetrieveByEmailQuery,
+            user_retrieve_by_username_query: UserRetrieveByUsernameQuery,
             password_hash_service: PasswordHashService,
             command: TokenCreateCommand,
     ) -> None:
-        self.user_retrieve_by_email_query = user_retrieve_by_email_query
+        self.user_retrieve_by_username_query = user_retrieve_by_username_query
         self.password_hash_service = password_hash_service
         self.command = command
 
     async def __call__(self, payload: UserCredentials) -> TokenResponse:
-        user = await self.user_retrieve_by_email_query(payload.email)
+        user = await self.user_retrieve_by_username_query(payload.username)
         if not user or not await self.password_hash_service.verify(
                 payload.password,
                 user.password_hash,
