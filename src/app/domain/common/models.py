@@ -144,7 +144,7 @@ class Feedback(Base):
 class PasswordResetCode(Base):
     __tablename__ = "password_reset_code"
     id = Column(Integer, primary_key=True)
-    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id), nullable=False)  # Используйте тип UUID здесь
+    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id), nullable=False)
     code = Column(String, nullable=False)
     created_at = Column(DateTime, default=func.now)
 
