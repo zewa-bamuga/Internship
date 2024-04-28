@@ -1,23 +1,16 @@
 import secrets
-import os
 from typing import Any
 
 from passlib.context import CryptContext
 from pydantic import Field, field_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from dotenv import load_dotenv
-
-load_dotenv()
-
-SECURITY_PRIVATE_KEY = os.getenv("SECURITY_PRIVATE_KEY")
-SECURITY_PUBLIC_KEY = os.getenv("SECURITY_PUBLIC_KEY")
 
 
 class ApiSettings(BaseSettings):
     prefix: str = Field(default="/api")
     cors_origins: list[str] = Field(default=["*"])
     show_docs: bool = Field(default=True)
-    auth_uri: str = Field(default="/api/v1/users/authentication/oauth")
+    auth_uri: str = Field(default="/api/authentication/v1/authentication")
     model_config = SettingsConfigDict(env_prefix="API_")
 
 
@@ -27,10 +20,9 @@ class SecuritySettings(BaseSettings):
         deprecated="auto",
         bcrypt__rounds=10,
     )
-    secres_key: str = Field(default=secrets.token_urlsafe(32))
-    private_key: str = Field(default=SECURITY_PRIVATE_KEY,
-                             description="Private RSA key")
-    public_key: str = Field(default=SECURITY_PUBLIC_KEY, description="Public RSA key")
+    secret_key: str = Field(default=secrets.token_urlsafe(32))
+    private_key: str = Field(default=..., description="Private RSA key")
+    public_key: str = Field(default=..., description="Public RSA key")
 
     access_expiration_min: int = Field(default=15)
     refresh_expiration_min: int = Field(default=60 * 24 * 7)
@@ -58,29 +50,29 @@ class DatabaseSettings(BaseSettings):
     model_config = SettingsConfigDict(env_prefix="DB_")
 
 
-class MessageQueueSettings(BaseSettings):
-    broker_uri: str | None = Field(default=None)
-    model_config = SettingsConfigDict(env_prefix="MQ_")
+# class MessageQueueSettings(BaseSettings):
+#     broker_uri: str | None = Field(default=None)
+#     model_config = SettingsConfigDict(env_prefix="MQ_")
 
 
-class StorageSettings(BaseSettings):  # Это Amazon S3, нужно ли мне это
-    class LocalConnectionSettings(BaseSettings):
-        base_path: str = Field(default=...)
-        base_uri: str = Field(default=...)
-        model_config = SettingsConfigDict(env_prefix="LOCAL_STORAGE_")
-
-    class S3ConnectionSettings(BaseSettings):
-        endpoint_uri: str = Field(default=...)
-        access_key_id: str = Field(default=...)
-        secret_access_key: str = Field(default=...)
-        public_storage_uri: str = Field(default=...)
-        model_config = SettingsConfigDict(env_prefix="S3_")
-
-    default_bucket: str = Field(default="bucket")
-    use_s3: bool = Field(default=False)
-    local_storage: LocalConnectionSettings = LocalConnectionSettings()
-    s3_storage: S3ConnectionSettings = S3ConnectionSettings()
-    model_config = SettingsConfigDict(env_prefix="STORAGE_")
+# class StorageSettings(BaseSettings):  # Это Amazon S3, нужно ли мне это
+#     class LocalConnectionSettings(BaseSettings):
+#         base_path: str = Field(default=...)
+#         base_uri: str = Field(default=...)
+#         model_config = SettingsConfigDict(env_prefix="LOCAL_STORAGE_")
+#
+#     class S3ConnectionSettings(BaseSettings):
+#         endpoint_uri: str = Field(default=...)
+#         access_key_id: str = Field(default=...)
+#         secret_access_key: str = Field(default=...)
+#         public_storage_uri: str = Field(default=...)
+#         model_config = SettingsConfigDict(env_prefix="S3_")
+#
+#     default_bucket: str = Field(default="bucket")
+#     use_s3: bool = Field(default=False)
+#     local_storage: LocalConnectionSettings = LocalConnectionSettings()
+#     s3_storage: S3ConnectionSettings = S3ConnectionSettings()
+#     model_config = SettingsConfigDict(env_prefix="STORAGE_")
 
 
 class TasksSettings(BaseSettings):
@@ -94,6 +86,6 @@ class Settings(BaseSettings):
     security: SecuritySettings = SecuritySettings()
     sentry: SentrySettings = SentrySettings()
     db: DatabaseSettings = DatabaseSettings()
-    mq: MessageQueueSettings = MessageQueueSettings()
-    storage: StorageSettings = StorageSettings()
+    # mq: MessageQueueSettings = MessageQueueSettings()
+    # storage: StorageSettings = StorageSettings()
     tasks: TasksSettings = TasksSettings()

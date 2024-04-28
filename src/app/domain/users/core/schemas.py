@@ -15,7 +15,7 @@ from a8t_tools.db import sorting as sr
 class User(APIModel):
     id: UUID
     username: str
-    email: str
+    # email: str
     status: UserStatuses
     avatar_attachment_id: UUID | None = None
     created_at: datetime
@@ -31,13 +31,13 @@ class UserDetailsFull(UserDetails):
 
 class UserCredentials(APIModel):
     username: str
-    email: EmailStr
+    # email: EmailStr
     password: str
 
 
 class UserCreate(APIModel):
     username: str
-    email: EmailStr
+    # email: EmailStr
     password_hash: str
     avatar_attachment_id: UUID | None = None
     permissions: set[str] | None = None
@@ -49,7 +49,7 @@ class UserCreateFull(UserCreate):
 
 class UserPartialUpdate(APIModel):
     username: str | None = None
-    email: EmailStr | None = None
+    # email: EmailStr | None = None
     avatar_attachment_id: UUID | None = None
     permissions: set[str] | None = None
     status: str | None = None
@@ -62,7 +62,7 @@ class UserPartialUpdateFull(UserPartialUpdate):
 class UserInternal(APIModel):
     id: UUID
     username: str
-    email: EmailStr
+    # email: EmailStr
     password_hash: str
     permissions: set[str] | None = None
     avatar_attachment_id: UUID | None = None
@@ -74,13 +74,13 @@ class UserInternal(APIModel):
 class UserSorts(enum.StrEnum):
     id = enum.auto()
     username = enum.auto()
-    email = enum.auto()
+    # email = enum.auto()
     status = enum.auto()
     created_at = enum.auto()
 
 
-class UpdatePassword(APIModel):
-    email: EmailStr
+# class UpdatePassword(APIModel):
+#     email: EmailStr
 
 
 @dataclass
@@ -93,4 +93,4 @@ class UserListRequestSchema:
 class UserWhere:
     id: UUID | None = None
     username: str | None = None
-    email: EmailStr | None = None
+    # email: EmailStr | None = None

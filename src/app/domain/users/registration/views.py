@@ -19,5 +19,5 @@ async def register(
         command: UserRegisterCommand = Depends(wiring.Provide[Container.user.register_command]),
 ) -> UserDetails:
     user_details = await command(payload)
-    await send_hello(user_details)
+    # await send_hello(user_details)
     return user_details
