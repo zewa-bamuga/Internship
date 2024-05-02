@@ -24,9 +24,9 @@ class UserRepository(CrudRepositoryMixin[models.User]):
         self.transaction = transaction
 
     async def get_users(
-            self,
-            pagination: PaginationCallable[schemas.User] | None = None,
-            sorting: SortingData[schemas.UserSorts] | None = None,
+        self,
+        pagination: PaginationCallable[schemas.User] | None = None,
+        sorting: SortingData[schemas.UserSorts] | None = None,
     ) -> Paginated[schemas.User]:
         return await self._get_list(
             schemas.User,

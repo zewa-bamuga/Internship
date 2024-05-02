@@ -18,7 +18,7 @@ async def universal_exception_handler(request: Request, exc: Exception) -> JSONR
 
 
 def typed_exception_handler(
-        exc_type: type[BaseModel],
+    exc_type: type[BaseModel],
 ) -> Callable[[Request, exceptions.GenericApiError], Coroutine[Any, Any, JSONResponse]]:
     async def exception_handler(_: Request, exc: exceptions.GenericApiError) -> JSONResponse:
         response_content = exc_type.model_validate(exc).model_dump()

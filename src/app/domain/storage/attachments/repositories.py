@@ -15,9 +15,9 @@ class AttachmentRepository:
         self.transaction = transaction
 
     async def get_attachments(
-            self,
-            pagination: PaginationCallable[schemas.Attachment] | None = None,
-            sorting: SortingData[schemas.AttachmentSorts] | None = None,
+        self,
+        pagination: PaginationCallable[schemas.Attachment] | None = None,
+        sorting: SortingData[schemas.AttachmentSorts] | None = None,
     ) -> Paginated[schemas.Attachment]:
         query = apply_sorting(select(models.Attachment), sorting)
 

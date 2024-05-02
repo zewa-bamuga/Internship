@@ -76,7 +76,7 @@ class DatabaseSettings(BaseSettings):
 
 
 class TasksSettings(BaseSettings):
-    params: dict[str, Any] = {"active_user": {"time_limit": 7200}}
+    params: dict[str, Any] = {"activate_user": {"time_limit": 7200}}
     schedules: list[dict[str, Any]] = []
     model_config = SettingsConfigDict(env_prefix="TASKS_")
 

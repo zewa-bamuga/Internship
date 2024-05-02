@@ -23,7 +23,7 @@ profile = APIRouter(prefix="/profile")
 profile.include_router(
     app.domain.users.profile.views.router,
     prefix="/v1",
-    tags=["users"],
+    tags=["Profile"],
 )
 
 management = APIRouter(prefix="/management")

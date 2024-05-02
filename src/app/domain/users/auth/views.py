@@ -1,5 +1,6 @@
 from dependency_injector import wiring
 from fastapi import APIRouter, Body, Depends
+from fastapi.security import OAuth2PasswordRequestForm
 
 from app.containers import Container
 from app.domain.users.auth.commands import TokenRefreshCommand, UserAuthenticateCommand
@@ -15,9 +16,10 @@ router = APIRouter()
 )
 @wiring.inject
 async def authenticate(
-        payload: UserCredentials,
-        command: UserAuthenticateCommand = Depends(wiring.Provide[Container.user.authenticate_command]),
+    form_data: OAuth2PasswordRequestForm = Depends(),
+    command: UserAuthenticateCommand = Depends(wiring.Provide[Container.user.authenticate_command]),
 ) -> TokenResponse:
+    payload = UserCredentials(username=form_data.username, password=form_data.password)
     return await command(payload)
 
 

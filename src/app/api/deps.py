@@ -5,7 +5,7 @@ from a8t_tools.security.tokens import override_user_token
 from fastapi import Depends, Query
 from fastapi.security import OAuth2PasswordBearer
 
-reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="authentication/v1/authentication")
+reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="api/authentication/v1/authentication", auto_error=False)
 
 
 def user_token_dep_factory(

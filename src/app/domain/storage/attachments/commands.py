@@ -12,11 +12,11 @@ from app.domain.storage.attachments.repositories import AttachmentRepository
 
 class AttachmentCreateCommand:
     def __init__(
-            self,
-            repository: AttachmentRepository,
-            file_storage: FileStorage,
-            bucket: str,
-            max_name_len: int = 60,
+        self,
+        repository: AttachmentRepository,
+        file_storage: FileStorage,
+        bucket: str,
+        max_name_len: int = 60,
     ):
         self.repository = repository
         self.file_storage = file_storage
@@ -50,7 +50,7 @@ class AttachmentCreateCommand:
         return str(uuid.uuid4())
 
     @classmethod
-    def _slugofy(cls, s: str) -> str:
+    def _slugify(cls, s: str) -> str:
         s = s.lower().strip()
         s = re.sub(r"[^\w\s\.-]", "", s)
         s = re.sub(r"[\s_-]+", "-", s)
@@ -60,9 +60,9 @@ class AttachmentCreateCommand:
 
 class AttachmentDataRetrieveCommand:
     def __init__(
-            self,
-            file_storage: FileStorage,
-            bucket: str,
+        self,
+        file_storage: FileStorage,
+        bucket: str,
     ):
         self.file_storage = file_storage
         self.bucket = bucket
