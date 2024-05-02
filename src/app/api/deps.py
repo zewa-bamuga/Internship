@@ -5,14 +5,12 @@ from a8t_tools.security.tokens import override_user_token
 from fastapi import Depends, Query
 from fastapi.security import OAuth2PasswordBearer
 
-reusable_oauth2 = OAuth2PasswordBearer(tokenUrl="api/authentication/v1/authentication", auto_error=False)
-
 
 def user_token_dep_factory(
-    reusable_oauth2: OAuth2PasswordBearer,
+        reusable_oauth2: OAuth2PasswordBearer,
 ) -> Callable[[str | None], AsyncIterator[None]]:
     async def user_token(
-        token: str | None = Depends(reusable_oauth2),
+            token: str | None = Depends(reusable_oauth2),
     ) -> AsyncIterator[None]:
         async with override_user_token(token or ""):
             yield

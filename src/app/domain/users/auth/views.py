@@ -16,10 +16,9 @@ router = APIRouter()
 )
 @wiring.inject
 async def authenticate(
-    form_data: OAuth2PasswordRequestForm = Depends(),
+    payload: UserCredentials,
     command: UserAuthenticateCommand = Depends(wiring.Provide[Container.user.authenticate_command]),
 ) -> TokenResponse:
-    payload = UserCredentials(username=form_data.username, password=form_data.password)
     return await command(payload)
 
 

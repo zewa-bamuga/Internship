@@ -109,11 +109,12 @@ class UserContainer(containers.DeclarativeContainer):
         repository=repository,
     )
 
-    token_ctx_var_object = providers.Object(token_ctx_var)
+    token = "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJpYXQiOjE3MTQ2MzU5NzksImV4cCI6MTcxNDYzNjg3OSwic3ViIjoiYjljODNjMjctNDk5OC00OGQzLThkNjQtMjczZDE0N2YzYTdiIn0.BGk3wj1W8joshVp89aXliTSCZasR3Nk1qqeSDPy9oYFp2X6Onaazbf0ayvKnJ_VvlJoenRNUfVdTp3WwMtundykjAm7v102XEEmOgipqyUlcVnLZomUzaWkR5HGPYF1S6d18-HiLm0IaDoOp-QDdzsBDD-y-lcK93CQqMs66LfXZjzIn9MsjoLoFoPAkQRcTqv9td6Yf7VqF29j3E9WpGn3J7Xk7uFD5ywvEucnZd5_WycbZuoliYt-NUUDBslJOPGk5a2hQG8wHPiGmerJCuUV20b0IFpoTkwNh7DuU9THs66X6Y_jgg7z3mwN5ldRKO4XQ3306ZnQ0ulsHLbhJiw"
+    token_ctx_var_object = providers.Object(token)
 
     current_user_token_query = providers.Factory(
         CurrentUserTokenQuery,
-        token_ctx_var=token_ctx_var_object,
+        token_ctx_var=token,
     )
 
     permission_list_query = providers.Factory(
