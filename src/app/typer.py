@@ -46,6 +46,7 @@ async def noop() -> None:
 @async_to_sync
 async def create_superuser(
     username: str = typer.Argument(...),
+    email: str = typer.Argument(...),
     password: str = typer.Argument(...),
 ) -> None:
     password_hash = await container.user.password_hash_service().hash(password)
@@ -54,6 +55,7 @@ async def create_superuser(
         await command(
             UserCreate(
                 username=username,
+                email=email,
                 password_hash=password_hash,
                 permissions={BasePermissions.superuser},
             ),

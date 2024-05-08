@@ -11,11 +11,11 @@ from app.domain.users.core.schemas import UserDetails
 
 
 class CurrentUserTokenQuery:
-    def __init__(self, token_ctx_var: str) -> None:
+    def __init__(self, token_ctx_var: ContextVar) -> None:
         self.token_ctx_var = token_ctx_var
 
     async def __call__(self) -> str | None:
-        return self.token_ctx_var
+        return self.token_ctx_var.get()
 
 
 class TokenPayloadQuery:

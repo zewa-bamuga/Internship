@@ -1,7 +1,12 @@
+from contextlib import asynccontextmanager
+
+from a8t_tools.security.tokens import override_user_token
 from dependency_injector import wiring
-from fastapi import APIRouter, Depends, status
+from dependency_injector.wiring import Provide
+from fastapi import APIRouter, Depends, status, Header, HTTPException
 
 from app.containers import Container
+from app.domain.users.auth.queries import CurrentUserTokenQuery, TokenPayloadQuery
 from app.domain.users.core.schemas import UserDetails
 from app.domain.users.profile import schemas
 from app.domain.users.profile.commands import UserProfilePartialUpdateCommand
@@ -9,6 +14,10 @@ from app.domain.users.profile.queries import UserProfileMeQuery
 
 router = APIRouter()
 
+@asynccontextmanager
+async def user_token(token: str):
+    async with override_user_token(token or ""):
+        yield
 
 @router.get(
     "/me",
@@ -16,9 +25,12 @@ router = APIRouter()
 )
 @wiring.inject
 async def get_me(
-    query: UserProfileMeQuery = Depends(wiring.Provide[Container.user.profile_me_query]),
+    token: str = Header(...),
+    query: UserProfileMeQuery = Depends(Provide[Container.user.profile_me_query]),
 ) -> UserDetails:
-    return await query()
+    async with user_token(token):  # Используйте оператор async with для вызова контекстного менеджера
+        return await query()
+
 
 
 @router.patch(
