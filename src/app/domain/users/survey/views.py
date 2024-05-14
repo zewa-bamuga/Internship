@@ -9,7 +9,7 @@ from app.containers import Container
 from app.domain.users.core import schemas
 from app.domain.users.core.schemas import UserСhoiceSurvey
 from app.domain.users.profile.views import user_token
-from app.domain.users.survey.command import SurveyCategoryUserAddCommand
+# from app.domain.users.survey.command import SurveyCategoryUserAddCommand
 from app.domain.users.survey.queries import SurveyManagementListQuery
 
 router = APIRouter()
@@ -46,6 +46,6 @@ async def get(
 async def choose(
         token: str,
         payload: UserСhoiceSurvey,
-        command:SurveyCategoryUserAddCommand
+        # command:SurveyCategoryUserAddCommand
 ) -> UserСhoiceSurvey:
     return
