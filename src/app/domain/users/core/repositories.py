@@ -59,6 +59,24 @@ class UpdatePasswordRepository(CrudRepositoryMixin[models.PasswordResetCode]):
     async def create_update_password(self, payload: schemas.PasswordResetCode) -> IdContainerTables:
         return IdContainerTables(id=await self._create(payload))
 
+    async def get_password_reset_code_by_code_or_none(self,
+                                                      where: schemas.PasswordResetCodeWhere) -> schemas.PasswordResetCode | None:
+        return await self._get_or_none(
+            schemas.PasswordResetCode,
+            condition=await self._format_filters_code(where),
+        )
+
+    async def _format_filters_code(self, where: schemas.PasswordResetCodeWhere) -> ColumnElement[bool]:
+        filters: list[ColumnElement[bool]] = []
+
+        if where.id is not None:
+            filters.append(models.PasswordResetCode.id == where.id)
+
+        if where.code is not None:
+            filters.append(models.PasswordResetCode.code == where.code)
+
+        return and_(*filters)
+
 
 class UserRepository(CrudRepositoryMixin[models.User]):
     load_options: list[ExecutableOption] = [
@@ -88,6 +106,13 @@ class UserRepository(CrudRepositoryMixin[models.User]):
             options=self.load_options,
         )
 
+    async def get_user_by_filter_by_email_or_none(self, where: schemas.UserWhere) -> schemas.UserInternal | None:
+        return await self._get_or_none(
+            schemas.UserInternal,
+            condition=await self._format_filters_email(where),
+            options=self.load_options,
+        )
+
     async def create_user(self, payload: schemas.UserCreate) -> IdContainer:
         return IdContainer(id=await self._create(payload))
 
@@ -108,5 +133,16 @@ class UserRepository(CrudRepositoryMixin[models.User]):
 
         if where.username is not None:
             filters.append(models.User.username == where.username)
+
+        return and_(*filters)
+
+    async def _format_filters_email(self, where: schemas.UserWhere) -> ColumnElement[bool]:
+        filters: list[ColumnElement[bool]] = []
+
+        if where.id is not None:
+            filters.append(models.User.id == where.id)
+
+        if where.email is not None:
+            filters.append(models.User.email == where.email)
 
         return and_(*filters)

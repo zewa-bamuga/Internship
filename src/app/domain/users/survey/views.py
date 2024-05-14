@@ -46,6 +46,6 @@ async def get(
 async def choose(
         token: str,
         payload: UserСhoiceSurvey,
-        # command:SurveyCategoryUserAddCommand
+        # command: SurveyCategoryUserAddCommand = Depends(wiring.Provide[Container.user.user_choose_survey_query]),
 ) -> UserСhoiceSurvey:
     return

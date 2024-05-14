@@ -92,13 +92,29 @@ class UserSorts(enum.StrEnum):
     created_at = enum.auto()
 
 
-class UpdatePassword(APIModel):
+class UpdatePasswordRequest(APIModel):
     email: str
+
+
+class UpdatePasswordConfirm(APIModel):
+    email: str | None = None
+    code: str | None = None
+    password: str | None = None
+
+
+class UserProfilePartialUpdate(APIModel):
+    username: str | None = None
+    password: str | None = None
+    avatar_attachment_id: UUID | None = None
 
 
 class PasswordResetCode(APIModel):
     user_id: UUID
     code: str
+
+
+class PasswordResetCodePartialUpdate(APIModel):
+    code: str | None = None
 
 
 class Survey(APIModel):
@@ -136,3 +152,10 @@ class UserWhere:
     id: UUID | None = None
     username: str | None = None
     email: str | None = None
+
+
+@dataclass
+class PasswordResetCodeWhere:
+    id: int | None = None
+    user_id: UUID | None = None
+    code: str | None = None

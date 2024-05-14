@@ -5,7 +5,7 @@ from pydantic import EmailStr
 
 from app.domain.common.exceptions import NotFoundError
 from app.domain.users.core import schemas
-from app.domain.users.core.repositories import UserRepository, SurveyRepository
+from app.domain.users.core.repositories import UserRepository, SurveyRepository, UpdatePasswordRepository
 
 
 class UserListQuery:
@@ -32,7 +32,7 @@ class EmailRetrieveQuery:
         self.repository = repository
 
     async def __call__(self, user_email: str) -> schemas.UserInternal:
-        result = await self.repository.get_user_by_filter_or_none((schemas.UserWhere(email=user_email)))
+        result = await self.repository.get_user_by_filter_by_email_or_none((schemas.UserWhere(email=user_email)))
         if not result:
             raise NotFoundError()
         return schemas.UserInternal.model_validate(result)
@@ -59,4 +59,15 @@ class UserRetrieveByEmailQuery:
         self.repository = repository
 
     async def __call__(self, email: str) -> schemas.UserInternal | None:
-        return await self.repository.get_user_by_filter_or_none(schemas.UserWhere(email=email))
+        user_internal = await self.repository.get_user_by_filter_by_email_or_none(schemas.UserWhere(email=email))
+        return user_internal
+
+
+class UserRetrieveByCodeQuery:
+    def __init__(self, repository: UpdatePasswordRepository):
+        self.repository = repository
+
+    async def __call__(self, code: str) -> schemas.PasswordResetCode | None:
+        password_reset_code_internal = await self.repository.get_password_reset_code_by_code_or_none(
+            schemas.PasswordResetCodeWhere(code=code))
+        return password_reset_code_internal

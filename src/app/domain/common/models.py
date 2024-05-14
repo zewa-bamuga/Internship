@@ -99,8 +99,6 @@ class UserResponse(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(UUID(as_uuid=True), ForeignKey(User.id))
     survey_id = Column(Integer, ForeignKey(Survey.id))
-    created_at = Column(DateTime, default=func.now, nullable=False)
-    updated_at = Column(DateTime, default=func.now, onupdate=func.now, nullable=False)
 
 
 class RouteRating(Base):
@@ -109,8 +107,6 @@ class RouteRating(Base):
     user_id = Column(UUID(as_uuid=True), ForeignKey(User.id))
     question_id = Column(Integer, ForeignKey(Question.id))
     rating = Column(Float)
-    created_at = Column(DateTime, default=func.now, nullable=False)
-    updated_at = Column(DateTime, default=func.now, onupdate=func.now, nullable=False)
 
     user = relationship("User", backref="route_ratings")
     question = relationship("Question")
@@ -132,8 +128,6 @@ class Feedback(Base):
     device_name = Column(String)
     os_version = Column(String)
     app_version = Column(String)
-    created_at = Column(DateTime, default=func.now)
-    updated_at = Column(DateTime, default=func.now, onupdate=func.now)
 
     user = relationship("User", backref="feedbacks")
 
@@ -143,7 +137,6 @@ class PasswordResetCode(Base):
     id = Column(Integer, primary_key=True)
     user_id = Column(UUID(as_uuid=True), ForeignKey(User.id), nullable=False)
     code = Column(String, nullable=False)
-    created_at = Column(DateTime, default=func.now)
 
     user = relationship("User")
 

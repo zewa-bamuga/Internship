@@ -15,18 +15,19 @@ from app.domain.users.auth.queries import (
 from app.domain.users.management.commands import UserManagementCreateCommand, UserManagementPartialUpdateCommand
 from app.domain.users.management.queries import (
     UserManagementListQuery,
-    UserManagementRetrieveQuery, EmailManagementRetrieveQuery,
+    UserManagementRetrieveQuery,
 )
 from app.domain.users.auth.repositories import TokenRepository
 from app.domain.users.core.commands import (
     UserActivateCommand,
     UserCreateCommand,
-    UserPartialUpdateCommand, SurveyCreateCommand, QuestionCreateCommand, UpdatePasswordCommand,
+    UserPartialUpdateCommand, SurveyCreateCommand, QuestionCreateCommand, UpdatePasswordRequestCommand,
+    UpdatePasswordConfirmCommand,
 )
 from app.domain.users.core.queries import (
     UserListQuery,
     UserRetrieveByUsernameQuery,
-    UserRetrieveQuery, UserRetrieveByEmailQuery, SurveyListQuery, EmailRetrieveQuery,
+    UserRetrieveQuery, UserRetrieveByEmailQuery, SurveyListQuery, EmailRetrieveQuery, UserRetrieveByCodeQuery,
 )
 from app.domain.users.core.repositories import UserRepository, SurveyRepository, QuestionRepository, \
     UpdatePasswordRepository
@@ -92,7 +93,7 @@ class UserContainer(containers.DeclarativeContainer):
         repository=repository,
     )
 
-    retrieve_email_query = providers.Factory(
+    retrieve_by_email_query = providers.Factory(
         EmailRetrieveQuery,
         repository=repository,
     )
@@ -165,10 +166,22 @@ class UserContainer(containers.DeclarativeContainer):
         password_hash_service=password_hash_service,
     )
 
-    update_password_command = providers.Factory(
-        UpdatePasswordCommand,
-        user_retrieve_by_email_query=retrieve_by_username_query,
+    update_password_request_command = providers.Factory(
+        UpdatePasswordRequestCommand,
+        user_retrieve_by_email_query=retrieve_by_email_query,
         repository=repository_update_password,
+    )
+    get_userID_by_code = providers.Factory(
+        UserRetrieveByCodeQuery,
+        repository=repository_update_password,
+    )
+
+    update_password_confirm_command = providers.Factory(
+        UpdatePasswordConfirmCommand,
+        user_retrieve_by_email_query=retrieve_by_email_query,
+        repository=repository_update_password,
+        user_partial_update_command=partial_update_command,
+        user_retrieve_by_code_query=get_userID_by_code,
     )
 
     get_user_by_username = providers.Factory(
@@ -256,12 +269,6 @@ class UserContainer(containers.DeclarativeContainer):
         UserManagementRetrieveQuery,
         permission_service=permission_service,
         query=retrieve_query,
-    )
-
-    management_retrieve_email_query = providers.Factory(
-        EmailManagementRetrieveQuery,
-        permission_service=permission_service,
-        query=retrieve_email_query,
     )
 
     management_create_command = providers.Factory(
