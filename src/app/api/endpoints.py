@@ -5,6 +5,7 @@ import app.domain.users.auth.views
 import app.domain.users.management.views
 import app.domain.users.registration.views
 import app.domain.users.profile.views
+import app.domain.users.survey.views
 from app.api import schemas
 
 auth = APIRouter(prefix="/authentication")
@@ -17,6 +18,13 @@ auth.include_router(
     app.domain.users.auth.views.router,
     prefix="/v1",
     tags=["Authentication"]
+)
+
+survey = APIRouter(prefix="/survey")
+survey.include_router(
+    app.domain.users.survey.views.router,
+    prefix="/v1",
+    tags=["Survey"],
 )
 
 profile = APIRouter(prefix="/profile")
@@ -49,6 +57,7 @@ router = APIRouter(
 )
 
 router.include_router(auth)
+router.include_router(survey)
 router.include_router(profile)
 router.include_router(management)
 router.include_router(storage_router)

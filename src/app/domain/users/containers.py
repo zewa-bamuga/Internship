@@ -15,20 +15,21 @@ from app.domain.users.auth.queries import (
 from app.domain.users.management.commands import UserManagementCreateCommand, UserManagementPartialUpdateCommand
 from app.domain.users.management.queries import (
     UserManagementListQuery,
-    UserManagementRetrieveQuery,
+    UserManagementRetrieveQuery, EmailManagementRetrieveQuery,
 )
 from app.domain.users.auth.repositories import TokenRepository
 from app.domain.users.core.commands import (
     UserActivateCommand,
     UserCreateCommand,
-    UserPartialUpdateCommand,
+    UserPartialUpdateCommand, SurveyCreateCommand, QuestionCreateCommand, UpdatePasswordCommand,
 )
 from app.domain.users.core.queries import (
     UserListQuery,
     UserRetrieveByUsernameQuery,
-    UserRetrieveQuery,
+    UserRetrieveQuery, UserRetrieveByEmailQuery, SurveyListQuery, EmailRetrieveQuery,
 )
-from app.domain.users.core.repositories import UserRepository
+from app.domain.users.core.repositories import UserRepository, SurveyRepository, QuestionRepository, \
+    UpdatePasswordRepository
 from app.domain.users.permissions.queries import UserPermissionListQuery
 from app.domain.users.permissions.services import UserPermissionService
 from app.domain.users.registration.commands import UserRegisterCommand
@@ -37,6 +38,8 @@ from app.domain.users.profile.commands import UserProfilePartialUpdateCommand
 from a8t_tools.db.transactions import AsyncDbTransaction
 from a8t_tools.security.hashing import PasswordHashService
 from a8t_tools.security.tokens import JwtHmacService, JwtRsaService, token_ctx_var
+
+from app.domain.users.survey.queries import SurveyManagementListQuery
 
 
 class UserContainer(containers.DeclarativeContainer):
@@ -59,13 +62,38 @@ class UserContainer(containers.DeclarativeContainer):
         transaction=transaction,
     )
 
+    repository_survey = providers.Factory(
+        SurveyRepository,
+        transaction=transaction,
+    )
+
+    repository_question = providers.Factory(
+        QuestionRepository,
+        transaction=transaction,
+    )
+
+    repository_update_password = providers.Factory(
+        UpdatePasswordRepository,
+        transaction=transaction,
+    )
+
     list_query = providers.Factory(
         UserListQuery,
         repository=repository,
     )
 
+    survey_list_query = providers.Factory(
+        SurveyListQuery,
+        repository=repository_survey,
+    )
+
     retrieve_query = providers.Factory(
         UserRetrieveQuery,
+        repository=repository,
+    )
+
+    retrieve_email_query = providers.Factory(
+        EmailRetrieveQuery,
         repository=repository,
     )
 
@@ -77,6 +105,16 @@ class UserContainer(containers.DeclarativeContainer):
     create_command = providers.Factory(
         UserCreateCommand,
         repository=repository,
+    )
+
+    create_survey = providers.Factory(
+        SurveyCreateCommand,
+        repository=repository_survey,
+    )
+
+    create_question = providers.Factory(
+        QuestionCreateCommand,
+        repository=repository_question,
     )
 
     activate_command = providers.Factory(
@@ -125,6 +163,22 @@ class UserContainer(containers.DeclarativeContainer):
         UserRegisterCommand,
         user_create_command=create_command,
         password_hash_service=password_hash_service,
+    )
+
+    update_password_command = providers.Factory(
+        UpdatePasswordCommand,
+        user_retrieve_by_email_query=retrieve_by_username_query,
+        repository=repository_update_password,
+    )
+
+    get_user_by_username = providers.Factory(
+        UserRetrieveByUsernameQuery,
+        repository=repository,
+    )
+
+    get_user_by_email = providers.Factory(
+        UserRetrieveByEmailQuery,
+        repository=repository,
     )
 
     token_repository = providers.Factory(TokenRepository, transaction=transaction)
@@ -192,10 +246,22 @@ class UserContainer(containers.DeclarativeContainer):
         query=list_query,
     )
 
+    management_survey_list_query = providers.Factory(
+        SurveyManagementListQuery,
+        permission_service=permission_service,
+        query=survey_list_query,
+    )
+
     management_retrieve_query = providers.Factory(
         UserManagementRetrieveQuery,
         permission_service=permission_service,
         query=retrieve_query,
+    )
+
+    management_retrieve_email_query = providers.Factory(
+        EmailManagementRetrieveQuery,
+        permission_service=permission_service,
+        query=retrieve_email_query,
     )
 
     management_create_command = providers.Factory(

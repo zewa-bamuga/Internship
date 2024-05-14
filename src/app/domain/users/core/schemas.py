@@ -1,6 +1,7 @@
 import enum
 from dataclasses import dataclass
 from datetime import datetime
+from typing import List
 from uuid import UUID
 
 from pydantic import EmailStr
@@ -31,7 +32,7 @@ class UserDetailsFull(UserDetails):
 
 class UserCredentials(APIModel):
     username: str
-    email: EmailStr
+    email: str
     password: str
 
 
@@ -41,6 +42,18 @@ class UserCreate(APIModel):
     password_hash: str
     avatar_attachment_id: UUID | None = None
     permissions: set[str] | None = None
+
+
+class QuestionCreate(APIModel):
+    title: str
+    survey_id: int
+    description: str
+    short_description: str
+    points: int
+    distance: int
+    time: float
+    price: float
+    image_path: str
 
 
 class UserCreateFull(UserCreate):
@@ -62,7 +75,7 @@ class UserPartialUpdateFull(UserPartialUpdate):
 class UserInternal(APIModel):
     id: UUID
     username: str
-    email: EmailStr
+    email: str
     password_hash: str
     permissions: set[str] | None = None
     avatar_attachment_id: UUID | None = None
@@ -80,7 +93,30 @@ class UserSorts(enum.StrEnum):
 
 
 class UpdatePassword(APIModel):
-    email: EmailStr
+    email: str
+
+
+class PasswordResetCode(APIModel):
+    user_id: UUID
+    code: str
+
+
+class Survey(APIModel):
+    id: int
+    category: str
+
+
+class UserСhoiceSurvey(APIModel):
+    survey_id: List[int]
+
+
+class SurveyCreate(APIModel):
+    category: str
+
+
+class SurveySorts(enum.StrEnum):
+    id = enum.auto()
+    title = enum.auto()
 
 
 @dataclass
@@ -90,7 +126,13 @@ class UserListRequestSchema:
 
 
 @dataclass
+class SurveyListRequestSchema:
+    pagination: pg.PaginationCallable[Survey] | None = None
+    sorting: sr.SortingData[SurveySorts] | None = None
+
+
+@dataclass
 class UserWhere:
     id: UUID | None = None
     username: str | None = None
-    email: EmailStr | None = None
+    email: str | None = None

@@ -5,7 +5,7 @@ volumes:
   fastapi_media: { }
 
 services:
-  fastapi: &core
+  fastapi:
     build:
       context: .
       dockerfile: ./deploy/compose/local/fastapi.dockerfile
@@ -16,7 +16,6 @@ services:
       - MODULE_NAME=app.fastapi
     depends_on:
       - postgres
-      - db-init
     command: /start-reload-fastapi.sh
     env_file:
       - .env.example
@@ -24,14 +23,6 @@ services:
     restart: "unless-stopped"
     ports:
       - 8000:80
-
-  db-init:
-    <<: *core
-    depends_on:
-      - postgres
-    restart: "no"
-    command: /start-db-init.sh
-    ports: []
 
   postgres:
     image: postgres:latest

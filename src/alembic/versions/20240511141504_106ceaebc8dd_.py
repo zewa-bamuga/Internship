@@ -1,8 +1,8 @@
 """empty message
 
-Revision ID: 78e90f1605b2
+Revision ID: 106ceaebc8dd
 Revises: 
-Create Date: 2024-05-02 04:45:00.484055
+Create Date: 2024-05-11 14:15:04.500230
 
 """
 from typing import Sequence, Union
@@ -12,7 +12,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects import postgresql
 
 # revision identifiers, used by Alembic.
-revision: str = '78e90f1605b2'
+revision: str = '106ceaebc8dd'
 down_revision: Union[str, None] = None
 branch_labels: Union[str, Sequence[str], None] = None
 depends_on: Union[str, Sequence[str], None] = None
@@ -72,10 +72,10 @@ def upgrade() -> None:
     sa.PrimaryKeyConstraint('id')
     )
     op.create_table('user',
-    sa.Column('username', sa.String(), nullable=False),
-    sa.Column('email', sa.String(), nullable=False),
-    sa.Column('status', sa.String(), nullable=False),
-    sa.Column('password_hash', sa.String(), nullable=False),
+    sa.Column('username', sa.String(), nullable=True),
+    sa.Column('email', sa.String(), nullable=True),
+    sa.Column('status', sa.String(), nullable=True),
+    sa.Column('password_hash', sa.String(), nullable=True),
     sa.Column('avatar_attachment_id', sa.UUID(), nullable=True),
     sa.Column('permissions', postgresql.ARRAY(sa.String()), nullable=True),
     sa.Column('id', sa.UUID(), nullable=False),
@@ -133,7 +133,7 @@ def upgrade() -> None:
     op.create_table('tokens',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('user_id', sa.UUID(), nullable=False),
-    sa.Column('refresh_token_id', sa.UUID(), nullable=False),
+    sa.Column('refresh_token_id', sa.UUID(), nullable=True),
     sa.Column('created_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.Column('updated_at', sa.DateTime(timezone=True), server_default=sa.text('now()'), nullable=False),
     sa.ForeignKeyConstraint(['user_id'], ['user.id'], ondelete='CASCADE'),

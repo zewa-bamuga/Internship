@@ -1,3 +1,5 @@
+import uuid
+from typing import List
 from uuid import UUID
 
 from a8t_tools.db.pagination import PaginationCallable, Paginated
@@ -10,8 +12,52 @@ from sqlalchemy.orm import selectinload
 from sqlalchemy.sql.base import ExecutableOption
 
 from app.domain.common import models, enums
-from app.domain.common.schemas import IdContainer
+from app.domain.common.schemas import IdContainer, IdContainerTables
 from app.domain.users.core import schemas
+
+
+class SurveyRepository(CrudRepositoryMixin[models.Survey]):
+
+    def __init__(self, transaction: AsyncDbTransaction):
+        self.model = models.Survey
+        self.transaction = transaction
+
+    async def create_survey(self, payload: schemas.SurveyCreate) -> IdContainerTables:
+        return IdContainerTables(id=await self._create(payload))
+
+    async def create_user_response(self, payload: schemas.UserСhoiceSurvey) -> IdContainerTables:
+        return IdContainerTables(id=await self._create(payload))
+
+    async def get_surveys(
+            self,
+            pagination: PaginationCallable[schemas.Survey] | None = None,
+            sorting: SortingData[schemas.SurveySorts] | None = None,
+    ) -> Paginated[schemas.Survey]:
+        return await self._get_list(
+            schemas.Survey,
+            pagination=pagination,
+            sorting=sorting,
+        )
+
+
+class QuestionRepository(CrudRepositoryMixin[models.Question]):
+
+    def __init__(self, transaction: AsyncDbTransaction):
+        self.model = models.Question
+        self.transaction = transaction
+
+    async def create_question(self, payload: schemas.QuestionCreate) -> IdContainerTables:
+        return IdContainerTables(id=await self._create(payload))
+
+
+class UpdatePasswordRepository(CrudRepositoryMixin[models.PasswordResetCode]):
+
+    def __init__(self, transaction: AsyncDbTransaction):
+        self.model = models.PasswordResetCode
+        self.transaction = transaction
+
+    async def create_update_password(self, payload: schemas.PasswordResetCode) -> IdContainerTables:
+        return IdContainerTables(id=await self._create(payload))
 
 
 class UserRepository(CrudRepositoryMixin[models.User]):
@@ -24,9 +70,9 @@ class UserRepository(CrudRepositoryMixin[models.User]):
         self.transaction = transaction
 
     async def get_users(
-        self,
-        pagination: PaginationCallable[schemas.User] | None = None,
-        sorting: SortingData[schemas.UserSorts] | None = None,
+            self,
+            pagination: PaginationCallable[schemas.User] | None = None,
+            sorting: SortingData[schemas.UserSorts] | None = None,
     ) -> Paginated[schemas.User]:
         return await self._get_list(
             schemas.User,

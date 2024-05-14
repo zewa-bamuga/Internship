@@ -31,38 +31,35 @@ class Attachment(Base):
 class User(Base):
     __tablename__ = "user"
 
-    username: orm.Mapped[str] = orm.mapped_column(sa.String, unique=True)
-    email: orm.Mapped[str] = orm.mapped_column(sa.String, unique=True)
-    status: orm.Mapped[str]
-    password_hash: orm.Mapped[str]
-    avatar_attachment_id: orm.Mapped[uuid.UUID] = orm.mapped_column(
+    username = Column(String, unique=True)
+    email = Column(String, unique=True)
+    status = Column(String)
+    password_hash = Column(String)
+    avatar_attachment_id = Column(
         UUID(as_uuid=True),
-        sa.ForeignKey("attachment.id", ondelete="SET NULL"),
+        ForeignKey("attachment.id", ondelete="SET NULL"),
         index=True,
         nullable=True,
     )
     permissions: orm.Mapped[set[str] | None] = orm.mapped_column(ARRAY(sa.String))
 
-    avatar_attachment: orm.Mapped["Attachment"] = orm.relationship(
+    avatar_attachment = relationship(
         "Attachment",
         backref="user_avatar_attachment",
         foreign_keys=[avatar_attachment_id],
         uselist=False,
     )
-    tokens: orm.Mapped[list["Token"]] = orm.relationship("Token")
+    tokens = relationship("Token", back_populates="user")
 
 
 class Token(Base):
     __tablename__ = "tokens"
 
     id = Column(Integer, primary_key=True)
-    user_id: orm.Mapped[uuid.UUID] = orm.mapped_column(
-        UUID(as_uuid=True),
-        sa.ForeignKey("user.id", ondelete="CASCADE"),
-        index=True,
-        nullable=False,
-    )
-    refresh_token_id: orm.Mapped[uuid.UUID] = orm.mapped_column(UUID(as_uuid=True))
+    user_id = Column(UUID(as_uuid=True), ForeignKey(User.id, ondelete="CASCADE"), index=True, nullable=False)
+    refresh_token_id = Column(UUID(as_uuid=True))
+
+    user = relationship("User", back_populates="tokens")
 
 
 class Role(Base):
@@ -149,10 +146,6 @@ class PasswordResetCode(Base):
     created_at = Column(DateTime, default=func.now)
 
     user = relationship("User")
-
-    @classmethod
-    def generate_code(cls) -> str:
-        return secrets.token_urlsafe(6)
 
     @classmethod
     def generate_code(cls) -> str:

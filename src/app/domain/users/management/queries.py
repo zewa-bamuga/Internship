@@ -1,6 +1,6 @@
 from uuid import UUID
 
-from app.domain.users.core.queries import UserListQuery, UserRetrieveQuery
+from app.domain.users.core.queries import UserListQuery, UserRetrieveQuery, EmailRetrieveQuery
 from app.domain.users.core.schemas import User, UserDetailsFull, UserListRequestSchema
 from app.domain.users.permissions.schemas import BasePermissions
 from app.domain.users.permissions.services import UserPermissionService
@@ -19,9 +19,9 @@ class UserManagementListQuery:
 
 class UserManagementRetrieveQuery:
     def __init__(
-        self,
-        query: UserRetrieveQuery,
-        permission_service: UserPermissionService,
+            self,
+            query: UserRetrieveQuery,
+            permission_service: UserPermissionService,
     ) -> None:
         self.query = query
         self.permission_service = permission_service
@@ -30,3 +30,18 @@ class UserManagementRetrieveQuery:
         await self.permission_service.assert_permissions(BasePermissions.superuser)
         user = await self.query(payload)
         return UserDetailsFull.model_validate(user)
+
+
+class EmailManagementRetrieveQuery:
+    def __init__(
+            self,
+            query: EmailRetrieveQuery,
+            permission_service: UserPermissionService,
+    ) -> None:
+        self.query = query
+        self.permission_service = permission_service
+
+    async def __call__(self, payload: str) -> UserDetailsFull:
+        await self.permission_service.assert_permissions(BasePermissions.superuser)
+        email = await self.query(payload)
+        return UserDetailsFull.model_validate(email)
